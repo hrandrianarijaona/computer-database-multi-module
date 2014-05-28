@@ -24,7 +24,12 @@ public class ComputerDTO {
 	}
 	
 	public ComputerDTO(Computer computer){
-		this.id = computer.getId().toString();
+		
+		if(computer==null)
+			System.out.println("C'est null man!!!");
+		
+		if(computer.getId()!=null)
+			this.id = computer.getId().toString();
 		this.name = computer.getName();
 		
 		

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
@@ -11,18 +13,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.core.om.Company;
 import com.excilys.core.om.Computer;
 import com.excilys.core.om.Computer.ComputerBuilder;
 
 @Repository
+@Transactional
 public class HibernateComputerDAOImpl implements ComputerDAO {
 
 //	@Autowired
 //	private SessionFactory sessionFactory;
 	
-	@PersistenceContext(type = PersistenceContextType.EXTENDED) //pour indiquer à Spring qu’il doit l’injecter et qu’en plus il doit être en mode étendu, c’est à dire que sa durée de vie est celle de l’application, et non pas crée à la demande.
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+	
+	@PersistenceContext(unitName = "entityManager", type = PersistenceContextType.EXTENDED) //pour indiquer à Spring qu’il doit l’injecter et qu’en plus il doit être en mode étendu, c’est à dire que sa durée de vie est celle de l’application, et non pas crée à la demande.
 	private EntityManager entityManager;
 	
 //	@SuppressWarnings("unused")
@@ -35,63 +42,101 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 	}
 
 	public Computer findComputerById(Long paramId) {
+		
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 //		Computer computer = (Computer) getCurrentSession().get(Computer.class, paramId);
 		Computer computer = entityManager.find(Computer.class, paramId);
+//		entityManager.close();
         return computer;
 	}
 
 
 	@SuppressWarnings("unchecked")
 	public List<Computer> getListComputers() {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 //		return getCurrentSession().createQuery("from computer").list();
-		return entityManager.createQuery("from Computer as computer").getResultList();
+		List<Computer> result = entityManager.createQuery("from Computer as computer").getResultList();
+//		entityManager.close();
+		return result;
 	}
 
 	public int getNbComputer() {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 		String query = "select count(*) from Computer";
 //		return getCurrentSession().createQuery(query).getFirstResult();
-		return ((Long) entityManager.createQuery(query).getResultList().get(0)).intValue();
+		int result = ((Long) entityManager.createQuery(query).getResultList().get(0)).intValue();
+		
+//		entityManager.close();
+		return result;
 	}
 
 	public int getNbComputerFilter(String word) {
+//		entityManager = entityManagerFactory.createEntityManager();
+	
 		String query = "select count(*) from Computer where name LIKE ?";
 		String paramWord = new StringBuilder("%").append(word).append("%").toString();
-		return ((Long) entityManager.createQuery(query).setParameter(1, paramWord).getResultList().get(0)).intValue();
+		int result = ((Long) entityManager.createQuery(query).setParameter(1, paramWord).getResultList().get(0)).intValue();
+		
+//		entityManager.close();
+		return result;
 	}
 
 	public Long insertComputer(Computer cp) {
-//		getCurrentSession().save(cp);
 
+		EntityManager em2 = entityManagerFactory.createEntityManager();
+		EntityTransaction transac = em2.getTransaction();
+		transac.begin();
 		
 		System.out.println("avant: " + cp);
-		entityManager.persist(cp);
+		em2.persist(cp);
+		em2.flush();
+		
+		transac.commit();
+		em2.close();
 		System.out.println("apres: " + cp);
 		
-//		String query = "insert into Computer(name, introduced)"
-		
-		
-		
-//		String query = "select count(*) from Computer where name LIKE ?";
-		
-		
+	
 		return cp.getId();
 	}
 
 	public void deleteComputer(Long id) {
+		EntityManager em2 = entityManagerFactory.createEntityManager();
+		EntityTransaction transac = em2.getTransaction();
+		transac.begin();
 		Computer computer = findComputerById(id);
-		if (computer != null)
+		if (computer != null){
+			System.out.println("Computer trouvé: " + computer);
 //			getCurrentSession().delete(computer);
-			entityManager.remove(computer);
+			if(!em2.isOpen()){
+				em2 = entityManagerFactory.createEntityManager();
+			}
+
+//			em2.remove(computer);
+			// need to check if the entity is managed by EntityManager#contains() and if not, then make it managed it EntityManager#merge().
+			em2.remove(em2.contains(computer) ? computer : em2.merge(computer));
+			transac.commit();
+		}
+		em2.close();
 	}
 
 	public void updateComputer(Computer computer) {
+//		entityManager = entityManagerFactory.createEntityManager();
+//		EntityTransaction transac = entityManager.getTransaction();
+//		transac.begin();
 //        getCurrentSession().update(computer);
         entityManager.merge(computer);
+//        transac.commit();
+//		entityManager.close();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Computer> searchComputersByFilteringAndOrdering(String word,
 			int filter, boolean isAsc) {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 		String sFilter;
 		switch(filter){
 		case 0: // par nom de Computer
@@ -126,6 +171,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		for (Object o : tempList) {
 			result.add((Computer) o);
 		}
+		
+//		entityManager.close();
 		return result;
 		
 	}
@@ -134,6 +181,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 	@SuppressWarnings("unchecked")
 	public List<Computer> searchComputersByFilteringAndOrderingWithRange(
 			String word, int rang, int interval, int filter, boolean isAsc) {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 		String sFilter;
 		switch(filter){
 		case 0: // par nom de Computer
@@ -162,6 +211,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		for (Object o : tempList) {
 			result.add((Computer) o);
 		}
+		
+//		entityManager.close();
 		return result;
 
 	}
@@ -169,6 +220,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 	@SuppressWarnings("unchecked")
 	public List<Computer> getListComputersByFilteringAndOrdering(int filter,
 			boolean isAsc) {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 		String sFilter;
 		switch(filter){
 		case 0: // par nom de Computer
@@ -196,6 +249,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		for (Object o : tempList) {
 			result.add((Computer) o);
 		}
+		
+//		entityManager.close();
 		return result;
 	
 	}
@@ -204,6 +259,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 	@SuppressWarnings("unchecked")
 	public List<Computer> getListComputersByFilteringAndOrderingWithRange(
 			int rang, int interval, int filter, boolean isAsc) {
+//		entityManager = entityManagerFactory.createEntityManager();
+		
 		String sFilter;
 		switch(filter){
 		case 0: // par nom de Computer
@@ -231,6 +288,8 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		for (Object o : tempList) {
 			result.add((Computer) o);
 		}
+		
+//		entityManager.close();
 		return result;
 	
 	}

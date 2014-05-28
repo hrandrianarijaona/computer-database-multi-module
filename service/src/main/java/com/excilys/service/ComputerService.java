@@ -112,7 +112,7 @@ public class ComputerService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insertComputer(Computer cp) {
 		Long id = null;
-		id = computerDAO.insertComputer(cp);		
+		id = computerDAO.insertComputer(cp);
 	}
 
 	/**
