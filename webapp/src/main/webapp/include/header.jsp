@@ -26,7 +26,7 @@
 	
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
 			<div class="container">
-				<a class="navbar-brand" href="RedirectIndexServlet"> <spring:message code="dashboard.header" text="Application - Computer Database" /> </a>
+				<a class="navbar-brand" href="IndexServlet"> <spring:message code="dashboard.header" text="Application - Computer Database" /> </a>
 			</div>
 			
 			<a href="?language=en${liste_param}"><img src="Images/english.gif" /></a>|<a href="?language=fr${liste_param}"><img src="Images/french.jpg" /></a>

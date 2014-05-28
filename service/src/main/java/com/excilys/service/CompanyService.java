@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.core.om.Company;
 import com.excilys.persistence.dao.CompanyDAOImpl;
+import com.excilys.persistence.dao.HibernateCompanyDAOImpl;
 import com.excilys.persistence.dao.JdbcTemplateCompanyDAO;
 
 /**
@@ -24,16 +25,19 @@ public class CompanyService {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired
-	private LogServiceImpl logService;
+//	@Autowired
+//	private LogServiceImpl logService;
 //	@Autowired
 //	private CompanyDAOImpl companyDAO;
+//	@Autowired
+//	private JdbcTemplateCompanyDAO companyDAO;
+	
 	@Autowired
-	private JdbcTemplateCompanyDAO companyDAO;
+	private HibernateCompanyDAOImpl companyDAO;
 	
 	
 	/**
-	 * Sert à obtenir l'unique instance de CompanyService
+	 * get an Instance of Company
 	 * @return
 	 */
 	public CompanyService getInstance(){
@@ -41,7 +45,7 @@ public class CompanyService {
 	}
 	
 	/**
-	 * Liste toute les Company dans la base de donnée
+	 * get all the Company
 	 * @return
 	 */
 	@Transactional
@@ -54,7 +58,7 @@ public class CompanyService {
 	}
 	
 	/**
-	 * Insert une companie dans la base
+	 * Insert a Company
 	 * @param cp
 	 */
 	@Transactional
@@ -68,7 +72,7 @@ public class CompanyService {
 	}
 	
 	/**
-	 * Recherche la company dans la base de donnée
+	 * Search Company
 	 * @param paramId l'id à rechercher
 	 * @return L'objet Company
 	 */

@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.persistence.dao.ComputerDAOImpl;
+import com.excilys.persistence.dao.HibernateComputerDAOImpl;
 import com.excilys.persistence.dao.JdbcTemplateComputerDAO;
 import com.excilys.core.om.Computer;
 
@@ -27,15 +29,18 @@ public class ComputerService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 //	@Autowired
 //	private ComputerDAOImpl computerDAO;
-	@Autowired
-	private JdbcTemplateComputerDAO computerDAO;
+//	@Autowired
+//	private JdbcTemplateComputerDAO computerDAO;
 	
 	@Autowired
-	private LogServiceImpl logService;
+	private HibernateComputerDAOImpl computerDAO;
+	
+//	@Autowired
+//	private LogServiceImpl logService;
 
 
 	/**
-	 * retourne l'unique instance de ComputerService
+	 * get an Instance of Computer
 	 * @return
 	 */
 	public ComputerService getInstance(){
@@ -43,11 +48,11 @@ public class ComputerService {
 	}
 
 	/**
-	 * Recherche le Computer dans la base de donnée
+	 * search Computer by Id
 	 * @param paramId l'id du Computer rechercher
 	 * @return l'instance de la Computer
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public Computer findComputerById(Long paramId){
 
 		log.info("findComputerById... ");
@@ -57,13 +62,13 @@ public class ComputerService {
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base
+	 * get all the Computer
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Computer> getListComputers() {
 		List<Computer> lc = null;
-		log.info("Listing des Computers... ");
+		log.info("Listing of Computers... ");
 		lc = computerDAO.getListComputers();
 		//			logService.addLog("Listing des Computers effectué...", TypeLog.INFOS, connection);
 
@@ -71,12 +76,12 @@ public class ComputerService {
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
+	 * get Computer by filtering and ordering
+	 * @param 0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Computer> getListComputersByFilteringAndOrdering(int filter, boolean isAsc) {
 		log.info("getListComputersByFilteringAndOrdering... ");
 		List<Computer> lc = null;
@@ -90,10 +95,10 @@ public class ComputerService {
 
 
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base
+	 * count the Computer from database
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public int getNbComputer(){
 		log.info("getNbComputer... ");
 		int nbComputer = computerDAO.getNbComputer();
@@ -102,16 +107,16 @@ public class ComputerService {
 	}
 
 	/**
-	 * Insert un ordinateur/computer dans la base
+	 * Insert a Computer
 	 */
-	@Transactional
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insertComputer(Computer cp) {
 		Long id = null;
 		id = computerDAO.insertComputer(cp);		
 	}
 
 	/**
-	 * Supprime l'ordinateur identifié en paramètre de la base de donnée
+	 * delete a Computer
 	 * @param id
 	 */
 	@Transactional
@@ -124,13 +129,13 @@ public class ComputerService {
 	}
 
 	/**
-	 * Fonction de recherche par filtre
+	 * search Computer by filtering and ordering
 	 * @param word le mot ou schema à rechercher
 	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Computer> searchComputersByFilteringAndOrdering(String word, int filter, boolean isAsc) {
 		List<Computer> lc = null;
 		log.info("searchComputersByFilteringAndOrdering... ");
@@ -141,7 +146,7 @@ public class ComputerService {
 
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base correspondant au motif avec intervalle de resultat et les critères de triage et d'ordre
+	 * search Computer by filtering and ordering with range
 	 * @param word le motif à chercher
 	 * @param rang la page
 	 * @param interval le nombre d'element à afficher
@@ -149,7 +154,7 @@ public class ComputerService {
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc) {
 
 		List<Computer> lc = null;
@@ -161,14 +166,14 @@ public class ComputerService {
 
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
+	 * search Computer by filtering and ordering with range
 	 * @param rang la page
 	 * @param interval le nombre d'element à afficher
 	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Computer> getListComputersByFilteringAndOrderingWithRange(int rang, int interval, int filter, boolean isAsc){
 
 		List<Computer> lc = null;
@@ -179,7 +184,7 @@ public class ComputerService {
 	}
 
 	/**
-	 * Met à jour un Computer de la base
+	 * update a Computer
 	 * @param comp le Computer à mettre à jour
 	 */
 	@Transactional
@@ -191,11 +196,11 @@ public class ComputerService {
 	}
 
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base contenant le motif filter
+	 * count Computer with filtering
 	 * @param filter le motif
 	 * @return
 	 */
-	@Transactional
+	@Transactional(readOnly=true)
 	public int getNbComputerFilter(String filter) {
 		log.info("getNbComputerFilter(" + filter + ")... ");
 		int nbComputer = computerDAO.getNbComputerFilter(filter);

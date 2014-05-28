@@ -26,6 +26,7 @@
 
 	<properties>
 		<spring.version>4.0.4.RELEASE</spring.version>
+		<hibernateVersion>4.3.5.Final</hibernateVersion>
 	</properties>
 
 	<dependencies>

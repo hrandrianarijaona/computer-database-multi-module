@@ -35,38 +35,38 @@
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
 				<th><spring:message code="dashboard.computer_name" text="Computers name" /> <a class="btn btn-default btn-xs"
-					id="sortDesc" href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=0"><span
+					id="sortDesc" href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=0"><span
 						class="glyphicon glyphicon-sort-by-alphabet"></span></a> <a
 					class="btn btn-default btn-xs" id="sortDesc"
-					href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=1"><span
+					href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=1"><span
 						class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
 
 				</th>
 				<th><spring:message code="dashboard.introduced" text="Introduced date" /> <a class="btn btn-default btn-xs"
-					id="sortDesc" href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=2"><span
+					id="sortDesc" href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=2"><span
 						class="glyphicon glyphicon-arrow-down"></span></a> <a
 					class="btn btn-default btn-xs" id="sortDesc"
-					href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=3"><span
+					href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=3"><span
 						class="glyphicon glyphicon-arrow-up"></span></a></th>
 				<!-- Table header for Discontinued Date -->
 				<th><spring:message code="dashboard.discontinued" text="Discontinued date" /> <a class="btn btn-default btn-xs"
-					id="sortDesc" href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=4"><span
+					id="sortDesc" href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=4"><span
 						class="glyphicon glyphicon-arrow-down"></span></a> <a
 					class="btn btn-default btn-xs" id="sortDesc"
-					href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=5"><span
+					href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=5"><span
 						class="glyphicon glyphicon-arrow-up"></span></a></th>
 				<!-- Table header for Company -->
 				<th><spring:message code="dashboard.company" text="Company" /> <a class="btn btn-default btn-xs" id="sortDesc"
-					href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=6"><span
+					href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=6"><span
 						class="glyphicon glyphicon-sort-by-alphabet"></span></a> <a
 					class="btn btn-default btn-xs" id="sortDesc"
-					href="RedirectIndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=7"><span
+					href="IndexServlet?page=0&interval=${pageComputer.pageLimit}&filter=${pageComputer.filter}&codeTri=7"><span
 						class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-
+		
 			<c:forEach items="${ pageComputer.liste }" var="comp">
 				<tr>
 					<td><a href="#"><c:out value="${comp.name}" /></td>

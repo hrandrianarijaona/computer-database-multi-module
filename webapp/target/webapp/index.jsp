@@ -1,3 +1,3 @@
 <%
-response.sendRedirect("RedirectIndexServlet");
+response.sendRedirect("IndexServlet");
 %>

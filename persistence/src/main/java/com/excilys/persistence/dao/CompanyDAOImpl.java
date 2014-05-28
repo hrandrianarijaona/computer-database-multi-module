@@ -50,7 +50,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	//private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/**
-	 * Sert à obtenir l'unique instance de CompanyDAO
+	 * Give an instance
 	 * @return
 	 */
 	public CompanyDAOImpl getInstance(){
@@ -58,7 +58,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	}
 
 	/**
-	 * Liste toute les companies répertorié
+	 * get all Company
 	 * @return
 	 */
 	public List<Company> getListCompany() {
@@ -75,7 +75,6 @@ public class CompanyDAOImpl implements CompanyDAO{
 		
 		ArrayList<Company> al = new ArrayList<Company>();
 
-		// requete de recuperation des companies répertorié dans la base
 		String query = "SELECT * FROM company;";
 		ResultSet results = null;
 		Statement stmt = null;
@@ -87,7 +86,6 @@ public class CompanyDAOImpl implements CompanyDAO{
 				results = stmt.executeQuery(query);
 
 				while(results.next()){
-					// Recuperation des donnéees de la ligne
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 
@@ -114,7 +112,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	}
 
 	/**
-	 * Insert une companie dans la base
+	 * Insert a Company
 	 * @param cp
 	 */
 	public Long insertCompany(Company cp) {
@@ -123,7 +121,6 @@ public class CompanyDAOImpl implements CompanyDAO{
 		Connection connection = DataSourceUtils.getConnection(datasource);
 		
 		Long id = null;
-		// ajoutez ici le code d'insertion d'un produit
 		String query = "INSERT INTO company(name) VALUES(?);";
 		int results = 0;
 		PreparedStatement pstmt = null;
@@ -139,13 +136,13 @@ public class CompanyDAOImpl implements CompanyDAO{
 			System.out.println("Insertion bien effectué...");
 			
 			try {
-				// On recupère l'id généré
+				// Generate id
 				ResultSet rsId = pstmt.getGeneratedKeys();
 				while(rsId.next()){
 					id = rsId.getLong(1);
 				}
 				
-				// fermeture de rsId
+			
 //				ConnectionFactory.closeObject(rsId);
 				JdbcDatasource.closeObject(rsId);
 				
@@ -169,7 +166,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	}
 
 	/**
-	 * Recherche la company dans la base de donnée
+	 * Search a Company
 	 * @param paramId l'id à rechercher
 	 * @return L'objet Company
 	 */
@@ -179,9 +176,8 @@ public class CompanyDAOImpl implements CompanyDAO{
 		Connection connection = DataSourceUtils.getConnection(datasource);
 		
 		// Company company = new Company();
-		Company company = Company.builder().build(); // créée par le pattern Builder
+		Company company = Company.builder().build(); // Builder pattern
 
-		// requete de recuperation des companies répertorié dans la base
 		String query = "SELECT * FROM company WHERE id=?;";
 		ResultSet results = null;
 		PreparedStatement pstmt = null;
@@ -194,7 +190,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de la ligne
+					
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					company.setId(id);

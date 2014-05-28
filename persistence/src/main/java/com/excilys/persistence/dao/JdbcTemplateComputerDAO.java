@@ -179,7 +179,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 
 		String query;
 
-		// requete de recherche du pattern
 		if(isAsc)
 			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + ";";
 		else
@@ -225,7 +224,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 			sFilter = sFilter + " DESC";
 
 		sFilter = sFilter + ", pc.name ASC ";
-		// requete de recherche du pattern
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + " LIMIT ?, ?;";
 
 		List<Computer> computers = jdbcTemplate.query(query, 
@@ -268,7 +266,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 
 		sFilter = sFilter + ", pc.name ASC";
 
-		// ajoutez ici le code de r�cup�ration des produits
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + ";";
 
 
@@ -312,7 +309,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 
 		sFilter = sFilter + ", pc.name ASC ";
 
-		// ajoutez ici le code de r�cup�ration des produits
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + " LIMIT ?,?;";
 
 		List<Computer> computers = jdbcTemplate.query(query, 

@@ -39,7 +39,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	}
 
 	/**
-	 * Retourne l'unique instance de ComputerDAO
+	 * Give the Instance
 	 * @return
 	 */
 	public ComputDAOImpl getInstance(){
@@ -48,9 +48,9 @@ public class ComputDAOImpl implements ComputerDAO{
 
 
 	/**
-	 * Recherche le Computer dans la base de donnée
-	 * @param paramId l'id du Computer rechercher
-	 * @return l'instance de la Computer
+	 * Search a Computer
+	 * @param paramId id of the Computer
+	 * @return instance of the Computer
 	 */
 	public Computer findComputerById(Long paramId){
 		Logger log = LoggerFactory.getLogger(this.getClass());
@@ -58,9 +58,8 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		Computer computer = new Computer();
@@ -68,7 +67,6 @@ public class ComputDAOImpl implements ComputerDAO{
 		// Company company = new Company();
 		Company company = Company.builder().build();
 
-		// requete de recuperation des companies répertorié dans la base
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.id=?;";
 		ResultSet results = null;
 		PreparedStatement pstmt = null;
@@ -81,7 +79,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de la ligne
 					Long computerId = results.getLong("pc.id");
 					String computerName = results.getString("pc.name");
 					DateTime computerIntroD = new DateTime(results.getDate("pc.introduced"));
@@ -99,9 +96,8 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche de company...");
+				System.out.println("Problem during the search of a Company...");
 			} finally{
 				try {
 
@@ -111,20 +107,19 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return computer;
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base
+	 * Get all the Computers
 	 * @return
 	 */
 	public List<Computer> getListComputers() {
@@ -134,14 +129,12 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
-		// ajoutez ici le code de r�cup�ration des produits
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY pc.name;";
 		ResultSet results = null;
 		Statement stmt = null;
@@ -154,7 +147,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = stmt.executeQuery(query);
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -165,8 +157,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
 					Company cpy = Company.builder().build();
 
 					cpy.setId(results.getLong("comp.id"));
@@ -177,9 +167,8 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de listing niveau DAO...");
+				System.out.println("Problem during the listing... in DAO level...");
 			} finally{
 				try {
 
@@ -189,13 +178,12 @@ public class ComputDAOImpl implements ComputerDAO{
 						stmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
@@ -203,8 +191,8 @@ public class ComputDAOImpl implements ComputerDAO{
 
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base
-	 * @param rang le rang
+	 * Get computer with range
+	 * @param rang the range
 	 * @return
 	 */
 	public List<Computer> getListComputersWithRange(int rang, int interval) {
@@ -214,14 +202,13 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
-		// ajoutez ici le code de r�cup�ration des produits
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY pc.name LIMIT ?, ?;";
 		ResultSet results = null;
 		PreparedStatement pstmt = null;
@@ -235,7 +222,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -246,8 +232,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -257,9 +241,8 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de listing...");
+				System.out.println("Problem during the listing...");
 			} finally{
 				try {
 
@@ -269,13 +252,12 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
@@ -283,7 +265,7 @@ public class ComputDAOImpl implements ComputerDAO{
 
 
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base
+	 * Count the Computer
 	 * @return
 	 */
 	public int getNbComputer(){
@@ -293,12 +275,11 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
-		// nombre de computer
+		// nb of Computer
 		int nb = -99;
 
 		// requete
@@ -313,14 +294,12 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = stmt.executeQuery(query);
 
 				while(results.next()){
-					// Recuperation des donnéees de la ligne
 					nb = results.getInt("nb");					
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de comptage de computer...");
+				System.out.println("Problem during the count...");
 			} finally{
 				try {
 
@@ -330,20 +309,19 @@ public class ComputDAOImpl implements ComputerDAO{
 						stmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return nb;
 	}
 
 	/**
-	 * Insert un ordinateur/computer dans la base
+	 * Insert a Computer
 	 */
 	public Long insertComputer(Computer cp) {
 		
@@ -352,14 +330,14 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 
 		Long id = null;
 		
-		// ajoutez ici le code d'insertion d'un produit
+		
 		String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 		int results = 0;
 		PreparedStatement pstmt = null;
@@ -380,32 +358,29 @@ public class ComputDAOImpl implements ComputerDAO{
 			else
 				pstmt.setNull(4, Types.NULL);
 			
-			System.out.println("La requete: " + pstmt.toString());
+			System.out.println("The request: " + pstmt.toString());
 
 			results = pstmt.executeUpdate();
 
 			System.out.println("Insertion bien effectué...");
 			
 			try {
-				// On recupère l'id généré
+				// get the id
 				ResultSet rsId = pstmt.getGeneratedKeys();
 				while(rsId.next()){
 					id = rsId.getLong(1);
 				}
 				
-				// fermeture de rsId
 				ConnectionFactory.closeObject(rsId);
 				
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
-				System.out.println("Probleme dans la génération des id Computer...");
+				System.out.println("Problem during id generation...");
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Probleme dans la requete d'insertion...");
+			System.out.println("Problem in the Insert...");
 		}finally{
 			try {
 
@@ -413,7 +388,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					pstmt.close();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -422,7 +396,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	}
 
 	/**
-	 * Supprime l'ordinateur identifié en paramètre de la base de donnée
+	 * delete a Computer
 	 * @param id
 	 */
 	public void deleteComputer(Long id){
@@ -432,12 +406,12 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
-		// la requete
+		// the request
 		String query = "DELETE FROM computer WHERE id=?;";
 		int results = 0;
 		PreparedStatement pstmt = null;
@@ -445,16 +419,15 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			pstmt = connection.prepareStatement(query);
 			pstmt.setLong(1, id);
-			System.out.println("La requete: " + pstmt.toString());
+			System.out.println("The request: " + pstmt.toString());
 
 			results = pstmt.executeUpdate();
 
-			System.out.println("Suppression bien effectué...");
+			System.out.println("Deletion done...");
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Probleme dans la requete de suppression...");
+			System.out.println("Problem during the deletion...");
 		}finally{
 			try {
 
@@ -462,14 +435,14 @@ public class ComputDAOImpl implements ComputerDAO{
 					pstmt.close();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base correspondant au motif
+	 * search a computer with filtering
+	 * @param word
 	 * @return
 	 */
 	public List<Computer> searchComputers(String word) {
@@ -479,14 +452,12 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
-		// requete de recherche du pattern
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ;";
 
 		ResultSet results = null;
@@ -501,7 +472,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -512,8 +482,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -523,9 +491,8 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche...");
+				System.out.println("Problem during the search...");
 			} finally{
 				try {
 
@@ -535,20 +502,20 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
 	}
 
 	/**
-	 * Fonction de recherche par filtre
+	 * search Computer by filtering and ordering
 	 * @param word le mot ou schema à rechercher
 	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
 	 * @param isAsc true => ascendant / false => descendant
@@ -561,22 +528,22 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
 		String sFilter;
 		switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by name
 			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
+		case 3: // by Company name
 			sFilter = "comp.name"; break;
 		default:
 			sFilter = "pc.name"; break;
@@ -584,7 +551,6 @@ public class ComputDAOImpl implements ComputerDAO{
 
 		String query;
 
-		// requete de recherche du pattern
 		if(isAsc)
 			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + ";";
 		else
@@ -602,7 +568,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -613,8 +578,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -624,9 +587,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche...");
+				System.out.println("Problem during the search...");
 			} finally{
 				try {
 
@@ -636,20 +599,20 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base correspondant au motif avec intervalle de resultat
+	 * search Computers with range
 	 * @return
 	 */
 	public List<Computer> searchComputersWithRange(String word, int rang, int interval) {
@@ -659,14 +622,14 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
-		// requete de recherche du pattern
+		
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY pc.name LIMIT ?, ?;";
 
 		ResultSet results = null;
@@ -685,7 +648,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				System.out.println(pstmt.toString());
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -696,8 +658,7 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
+				
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -707,9 +668,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche...");
+				System.out.println("Problem during the search...");
 			} finally{
 				try {
 
@@ -719,20 +680,20 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base correspondant au motif avec intervalle de resultat et les critères de triage et d'ordre
+	 * search Computer by filtering, ordering and with range
 	 * @param word le motif à chercher
 	 * @param rang la page
 	 * @param interval le nombre d'element à afficher
@@ -747,22 +708,22 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
 		String sFilter;
 		switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by name
 			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
+		case 3: // by Company name
 			sFilter = "comp.name"; break;
 		default:
 			sFilter = "pc.name"; break;
@@ -772,7 +733,6 @@ public class ComputDAOImpl implements ComputerDAO{
 			sFilter = sFilter + " DESC";
 
 		sFilter = sFilter + ", pc.name ASC ";
-		// requete de recherche du pattern
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + " LIMIT ?, ?;";
 
 
@@ -791,10 +751,8 @@ public class ComputDAOImpl implements ComputerDAO{
 
 				results = pstmt.executeQuery();
 
-				// System.out.println(pstmt.toString());
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -805,8 +763,6 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -816,9 +772,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche...");
+				System.out.println("Problem during the search...");
 			} finally{
 				try {
 
@@ -828,20 +784,19 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
+	 * get Computers by filtering and ordering
 	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
@@ -853,22 +808,21 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
 		String sFilter;
 		switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by name
 			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
+		case 3: // by Company name
 			sFilter = "comp.name"; break;
 		default:
 			sFilter = "pc.name"; break;
@@ -879,7 +833,6 @@ public class ComputDAOImpl implements ComputerDAO{
 		
 		sFilter = sFilter + ", pc.name ASC";
 
-		// ajoutez ici le code de r�cup�ration des produits
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + ";";
 		ResultSet results = null;
 		Statement stmt = null;
@@ -890,10 +843,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				stmt = connection.createStatement();
 				results = stmt.executeQuery(query);
 
-				System.out.println("La requete: " + query);
+				System.out.println("The request: " + query);
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -904,8 +856,7 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
+
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -915,9 +866,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de listing...");
+				System.out.println("Problem during the listing...");
 			} finally{
 				try {
 
@@ -927,13 +878,12 @@ public class ComputDAOImpl implements ComputerDAO{
 						stmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 
@@ -941,7 +891,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	}
 
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
+	 * get Computers by filtering and ordering with range
 	 * @param rang la page
 	 * @param interval le nombre d'element à afficher
 	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
@@ -955,22 +905,22 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		ArrayList<Computer> al = new ArrayList<Computer>();
 
 		String sFilter;
 		switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by name
 			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
+		case 3: // by Company name
 			sFilter = "comp.name"; break;
 		default:
 			sFilter = "pc.name"; break;
@@ -998,7 +948,6 @@ public class ComputDAOImpl implements ComputerDAO{
 				results = pstmt.executeQuery();
 
 				while(results.next()){
-					// Recuperation des donnéees de Computer
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 					DateTime introduced = null;
@@ -1009,8 +958,7 @@ public class ComputDAOImpl implements ComputerDAO{
 					if(results.getTimestamp("discontinued")!=null)
 						discontinued = new DateTime(results.getTimestamp("discontinued"));
 
-					// Creation de la company à associer
-					// Company cpy = new Company();
+
 					Company cpy = Company.builder().build();
 					cpy.setId(results.getLong("comp.id"));
 					cpy.setName(results.getString("comp.name"));
@@ -1020,9 +968,9 @@ public class ComputDAOImpl implements ComputerDAO{
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de listing...");
+				System.out.println("Problem during the listing...");
 			} finally{
 				try {
 
@@ -1032,13 +980,13 @@ public class ComputDAOImpl implements ComputerDAO{
 						pstmt.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					 
 					e.printStackTrace();
 				}
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			System.out.println("The connection is null...");
 		}
 
 		return al;
@@ -1056,9 +1004,9 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		// ajoutez ici le code d'update d'un Computer
@@ -1076,16 +1024,16 @@ public class ComputDAOImpl implements ComputerDAO{
 			else
 				pstmt.setNull(4, Types.NULL);
 			pstmt.setLong(5, comp.getId());
-			System.out.println("La requete: " + pstmt.toString());
+			System.out.println("The request: " + pstmt.toString());
 
 			results = pstmt.executeUpdate();
 
-			System.out.println("Mis à jour bien effectué...");
+			System.out.println("Update done...");
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
-			System.out.println("Probleme dans la requete de mis à jour...");
+			System.out.println("Problem during update...");
 		}finally{
 			try {
 
@@ -1093,7 +1041,7 @@ public class ComputDAOImpl implements ComputerDAO{
 					pstmt.close();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			}
 		}
@@ -1101,7 +1049,7 @@ public class ComputDAOImpl implements ComputerDAO{
 
 	
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base contenant le motif filter
+	 * count Computers with filtering
 	 * @param filter le motif
 	 * @param connection la connection
 	 * @return
@@ -1113,9 +1061,9 @@ public class ComputDAOImpl implements ComputerDAO{
 		try {
 			connection = connectionFactory.getConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			 
 			e1.printStackTrace();
-			log.error("Erreur lors de la demande de connection.");
+			log.error("Error during the connection request...");
 		}
 		
 		String query = "SELECT COUNT(*) AS nb FROM computer WHERE name LIKE ?;";
@@ -1133,9 +1081,9 @@ public class ComputDAOImpl implements ComputerDAO{
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
-			System.out.println("Probleme dans le count de resultat...");
+			System.out.println("Problem during the count of result...");
 		}finally{
 			try {
 
@@ -1143,7 +1091,7 @@ public class ComputDAOImpl implements ComputerDAO{
 					pstmt.close();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				 
 				e.printStackTrace();
 			}
 		}

@@ -7,23 +7,22 @@ import com.excilys.core.om.Company;
 
 public interface CompanyDAO {
 
-//  enlever pour le passage en SPRING
 // 	public static CompanyDAO cdao = null;
 
 	/**
-	 * Liste toute les companies répertorié
+	 * get all Companies
 	 * @return
 	 */
 	public List<Company> getListCompany();
 
 	/**
-	 * Insert une companie dans la base
+	 * Insert a Company
 	 * @param cp
 	 */
 	public Long insertCompany(Company cp);
 
 	/**
-	 * Recherche la company dans la base de donnée
+	 * Search a Company
 	 * @param paramId l'id à rechercher
 	 * @return L'objet Company
 	 */

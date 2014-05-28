@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +33,8 @@ public class RedirectIndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private ComputerService computerService;
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	public RedirectIndexServlet() {
 		// TODO Auto-generated constructor stub
@@ -111,6 +115,11 @@ public class RedirectIndexServlet extends HttpServlet {
 
 		// compte le nb de Computer dans la base
 		int nbComputer = computerService.getNbComputerFilter(sFiltre);
+//		System.out.println("*********************************************nb computer = " + nbComputer);
+//		System.out.println("*********************************************nb computer2 = " + computerList.size());
+//		for (Computer c1 : computerList) {
+//			System.out.println(c1);
+//		}
 		//		request.setAttribute("nbComputer", nbComputer);
 
 		// liste les Computers
@@ -129,6 +138,10 @@ public class RedirectIndexServlet extends HttpServlet {
 		//		request.setAttribute("nbPage", nbPage);
 
 		Page<Computer> laPage = new Page<>(nbComputer, page, interval, c, nbPage, sFiltre, computerList);
+//		System.out.println("La page:");
+//		for (Computer c1 : laPage.getListe()) {
+//			System.out.println(c1);
+//		}
 //		request.setAttribute("pageComputer", laPage);
 		model.addAttribute("pageComputer", laPage);
 

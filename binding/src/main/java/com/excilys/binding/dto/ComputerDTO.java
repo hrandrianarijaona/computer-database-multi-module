@@ -36,7 +36,10 @@ public class ComputerDTO {
 			this.discontinuedDate = computer.getDiscontinuedDate().toString("yyyy-MM-dd");
 		else
 			this.discontinuedDate = "";
-		this.idCompany = computer.getCompany().getId().toString();
+		if(computer.getCompany() != null)
+			this.idCompany = computer.getCompany().getId().toString();
+		else
+			this.idCompany = "";
 	}
 	
 
