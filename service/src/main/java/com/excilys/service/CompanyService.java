@@ -48,7 +48,7 @@ public class CompanyService {
 	 * @return
 	 */
 	@Transactional
-	public List<Company> getListCompany() {
+	public List<Company> retrieveAll() {
 		List<Company> lc = null;
 		log.info("getListCompany... ");
 		lc = companyDAO.retrieveAll();
@@ -61,7 +61,7 @@ public class CompanyService {
 	 * @param cp
 	 */
 	@Transactional
-	public void insertCompany(Company cp) {
+	public void insert(Company cp) {
 		Long id = null;
 		//			connection.setAutoCommit(false);
 					id = companyDAO.insert(cp);
@@ -76,7 +76,7 @@ public class CompanyService {
 	 * @return L'objet Company
 	 */
 	@Transactional(readOnly=true)
-	public Company findCompanyById(Long paramId){
+	public Company findById(Long paramId){
 		Company cpy = null;
 		log.info("findCompanyById(" + paramId + ") ");
 		cpy = companyDAO.findById(paramId);

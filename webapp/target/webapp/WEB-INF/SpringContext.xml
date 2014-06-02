@@ -14,28 +14,12 @@
 						http://www.springframework.org/schema/data/jpa
                         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
+	<import resource="classpath:security-context.xml" />
+	<import resource="classpath:db-context.xml" />
+
 	<context:annotation-config />
 
 	<context:component-scan base-package="com.excilys" />
-
-	<!-- BoneCP configuration -->
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl"
-			value="jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
-		<property name="idleConnectionTestPeriodInMinutes" value="60" />
-		<property name="idleMaxAgeInMinutes" value="240" />
-		<property name="maxConnectionsPerPartition" value="10" />
-		<property name="minConnectionsPerPartition" value="5" />
-		<property name="partitionCount" value="1" />
-		<property name="acquireIncrement" value="10" />
-		<property name="statementsCacheSize" value="50" />
-		<property name="disableConnectionTracking" value="true"></property>
-	</bean>
-
 
 	<!-- bind your messages.properties -->
 	<bean id="messageSource"
@@ -47,6 +31,12 @@
 			</list>
 		</property>
 	</bean>
+	
+<!-- 	<bean id="messageSource1" class="org.springframework.context.support.ResourceBundleMessageSource"> -->
+<!--         Locale source file prefix -->
+<!--         <property name="basename" value="language" /> -->
+<!--         <property name="defaultEncoding" value="UTF-8"/> -->
+<!--     </bean> -->
 
 	<!-- Pour l'internationalisation -->
 	<bean id="localeResolver"
@@ -54,56 +44,5 @@
 		<property name="defaultLocale" value="en" />
 	</bean>
 
-
-
-
-
-<!-- 	<bean id="txManager" -->
-<!-- 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
-<!-- 		<property name="dataSource" ref="dataSource" /> -->
-<!-- 	</bean> -->
-<!-- 	<tx:annotation-driven mode="aspectj" -->
-<!-- 		transaction-manager="txManager" /> -->
-
-	<!-- BoneCP configuration -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-
-	<!-- JPA -->
-<!-- 	<bean id="entityManagerFactory" -->
-<!-- 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> -->
-<!-- 		<property name="dataSource" ref="dataSource" /> -->
-<!-- 		<property name="jpaDialect"> -->
-<!-- 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" /> -->
-<!-- 		</property> -->
-<!-- 		<property name="jpaVendorAdapter"> -->
-<!-- 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"> -->
-<!-- 				<property name="showSql" value="true" /> -->
-<!-- 				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" /> -->
-<!-- 				On ne genere pas la BDD au demarrage -->
-<!-- 				<property name="generateDdl" value="false" /> -->
-<!-- 			</bean> -->
-<!-- 		</property> -->
-<!-- 		<property name="packagesToScan" value="com.excilys.core.om" /> -->
-<!-- 	</bean> -->
-	
-	<bean id="entityManagerFactory" 
-          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-    	  p:dataSource-ref="dataSource"
-          p:persistenceUnitName="entityManager">
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-        </property>
-        <property name="packagesToScan" value="com.excilys.core.om" />
-    </bean>
-
-	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
-
-	<!-- enable the configuration of transactional behavior based on annotations -->
-	<tx:annotation-driven transaction-manager="txManager" mode="aspectj" />
 
 </beans>

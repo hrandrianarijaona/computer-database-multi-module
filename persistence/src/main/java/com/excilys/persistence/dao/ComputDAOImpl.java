@@ -168,7 +168,7 @@ public class ComputDAOImpl implements ComputerDAO{
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				System.out.println("Problem during the listing... in DAO level...");
+				log.error("Problem during the listing... in DAO level...");
 			} finally{
 				try {
 
@@ -183,81 +183,7 @@ public class ComputDAOImpl implements ComputerDAO{
 			}
 		}
 		else{
-			System.out.println("The connection is null...");
-		}
-
-		return al;
-	}
-
-
-	/**
-	 * Get computer with range
-	 * @param rang the range
-	 * @return
-	 */
-	public List<Computer> getListComputersWithRange(int rang, int interval) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			 
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY pc.name LIMIT ?, ?;";
-		ResultSet results = null;
-		PreparedStatement pstmt = null;
-
-		if(connection != null){
-
-			try {
-				pstmt = connection.prepareStatement(query);
-				pstmt.setInt(1, rang*interval);
-				pstmt.setInt(2, interval);
-				results = pstmt.executeQuery();
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Problem during the listing...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(pstmt != null)
-						pstmt.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
+			log.error("The connection is null...");
 		}
 
 		return al;
@@ -299,7 +225,7 @@ public class ComputDAOImpl implements ComputerDAO{
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				System.out.println("Problem during the count...");
+				log.error("Problem during the count...");
 			} finally{
 				try {
 
@@ -314,7 +240,7 @@ public class ComputDAOImpl implements ComputerDAO{
 			}
 		}
 		else{
-			System.out.println("The connection is null...");
+			log.error("The connection is null...");
 		}
 
 		return nb;
@@ -358,11 +284,9 @@ public class ComputDAOImpl implements ComputerDAO{
 			else
 				pstmt.setNull(4, Types.NULL);
 			
-			System.out.println("The request: " + pstmt.toString());
 
 			results = pstmt.executeUpdate();
 
-			System.out.println("Insertion bien effectué...");
 			
 			try {
 				// get the id
@@ -375,12 +299,12 @@ public class ComputDAOImpl implements ComputerDAO{
 				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				System.out.println("Problem during id generation...");
+				log.error("Problem during id generation...");
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Problem in the Insert...");
+			log.error("Problem in the Insert...");
 		}finally{
 			try {
 
@@ -423,7 +347,7 @@ public class ComputDAOImpl implements ComputerDAO{
 
 			results = pstmt.executeUpdate();
 
-			System.out.println("Deletion done...");
+			log.info("Deletion done...");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -440,257 +364,6 @@ public class ComputDAOImpl implements ComputerDAO{
 		}
 	}
 
-	/**
-	 * search a computer with filtering
-	 * @param word
-	 * @return
-	 */
-	public List<Computer> searchComputers(String word) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ;";
-
-		ResultSet results = null;
-		PreparedStatement pstmt = null;
-
-		if(connection != null){
-
-			try {
-				pstmt = connection.prepareStatement(query);
-				pstmt.setString(1, "%"+ word + "%");
-
-				results = pstmt.executeQuery();
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Problem during the search...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(pstmt != null)
-						pstmt.close();
-
-				} catch (SQLException e) {
-					 
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
-		}
-
-		return al;
-	}
-
-	/**
-	 * search Computer by filtering and ordering
-	 * @param word le mot ou schema à rechercher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> searchComputersByFilteringAndOrdering(String word, int filter, boolean isAsc) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			 
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		String sFilter;
-		switch(filter){
-		case 0: // by name
-			sFilter = "pc.name"; break;
-		case 1: // by introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // by discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // by Company name
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		String query;
-
-		if(isAsc)
-			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + ";";
-		else
-			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + " DESC;";
-
-		ResultSet results = null;
-		PreparedStatement pstmt = null;
-
-		if(connection != null){
-
-			try {
-				pstmt = connection.prepareStatement(query);
-				pstmt.setString(1, "%"+ word + "%");
-
-				results = pstmt.executeQuery();
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				 
-				e.printStackTrace();
-				System.out.println("Problem during the search...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(pstmt != null)
-						pstmt.close();
-
-				} catch (SQLException e) {
-					 
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
-		}
-
-		return al;
-	}
-
-	/**
-	 * search Computers with range
-	 * @return
-	 */
-	public List<Computer> searchComputersWithRange(String word, int rang, int interval) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			 
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY pc.name LIMIT ?, ?;";
-
-		ResultSet results = null;
-		PreparedStatement pstmt = null;
-
-		if(connection != null){
-
-			try {
-				pstmt = connection.prepareStatement(query);
-				pstmt.setString(1, "%"+ word + "%");
-				pstmt.setInt(2, rang);
-				pstmt.setInt(3, interval);
-
-				results = pstmt.executeQuery();
-
-				System.out.println(pstmt.toString());
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-				
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				 
-				e.printStackTrace();
-				System.out.println("Problem during the search...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(pstmt != null)
-						pstmt.close();
-
-				} catch (SQLException e) {
-					 
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
-		}
-
-		return al;
-	}
 
 	/**
 	 * search Computer by filtering, ordering and with range
@@ -774,7 +447,7 @@ public class ComputDAOImpl implements ComputerDAO{
 			} catch (SQLException e) {
 				 
 				e.printStackTrace();
-				System.out.println("Problem during the search...");
+				log.error("Problem during the search...");
 			} finally{
 				try {
 
@@ -789,204 +462,7 @@ public class ComputDAOImpl implements ComputerDAO{
 			}
 		}
 		else{
-			System.out.println("The connection is null...");
-		}
-
-		return al;
-	}
-
-	/**
-	 * get Computers by filtering and ordering
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> getListComputersByFilteringAndOrdering(int filter, boolean isAsc) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		String sFilter;
-		switch(filter){
-		case 0: // by name
-			sFilter = "pc.name"; break;
-		case 1: // by introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // by discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // by Company name
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-		
-		sFilter = sFilter + ", pc.name ASC";
-
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + ";";
-		ResultSet results = null;
-		Statement stmt = null;
-
-		if(connection != null){
-
-			try {
-				stmt = connection.createStatement();
-				results = stmt.executeQuery(query);
-
-				System.out.println("The request: " + query);
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				 
-				e.printStackTrace();
-				System.out.println("Problem during the listing...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(stmt != null)
-						stmt.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
-		}
-
-
-		return al;
-	}
-
-	/**
-	 * get Computers by filtering and ordering with range
-	 * @param rang la page
-	 * @param interval le nombre d'element à afficher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> getListComputersByFilteringAndOrderingWithRange(int rang, int interval, int filter, boolean isAsc) {
-		
-		Logger log = LoggerFactory.getLogger(this.getClass());
-		Connection connection = null;
-		try {
-			connection = connectionFactory.getConnection();
-		} catch (SQLException e1) {
-			 
-			e1.printStackTrace();
-			log.error("Error during the connection request...");
-		}
-		
-		ArrayList<Computer> al = new ArrayList<Computer>();
-
-		String sFilter;
-		switch(filter){
-		case 0: // by name
-			sFilter = "pc.name"; break;
-		case 1: // by introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // by discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // by Company name
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-		
-		sFilter = sFilter + ", pc.name ASC ";
-		
-		// ajoutez ici le code de r�cup�ration des produits
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + " LIMIT ?,?;";
-		ResultSet results = null;
-		PreparedStatement pstmt = null;
-
-		if(connection != null){
-
-			try {
-				pstmt = connection.prepareStatement(query);
-
-
-				pstmt.setInt(1, rang*interval);
-				pstmt.setInt(2, interval);
-
-				results = pstmt.executeQuery();
-
-				while(results.next()){
-					Long id = results.getLong("id");
-					String name = results.getString("name");
-					DateTime introduced = null;
-					DateTime discontinued = null;
-
-					if(results.getTimestamp("introduced")!=null)
-						introduced = new DateTime(results.getTimestamp("introduced"));
-					if(results.getTimestamp("discontinued")!=null)
-						discontinued = new DateTime(results.getTimestamp("discontinued"));
-
-
-					Company cpy = Company.builder().build();
-					cpy.setId(results.getLong("comp.id"));
-					cpy.setName(results.getString("comp.name"));
-
-					al.add(new Computer(id, name, introduced, discontinued, cpy));
-
-				}
-
-			} catch (SQLException e) {
-				 
-				e.printStackTrace();
-				System.out.println("Problem during the listing...");
-			} finally{
-				try {
-
-					if(results != null)
-						results.close();
-					if(pstmt != null)
-						pstmt.close();
-
-				} catch (SQLException e) {
-					 
-					e.printStackTrace();
-				}
-			}
-		}
-		else{
-			System.out.println("The connection is null...");
+			log.error("The connection is null...");
 		}
 
 		return al;
@@ -1024,16 +500,15 @@ public class ComputDAOImpl implements ComputerDAO{
 			else
 				pstmt.setNull(4, Types.NULL);
 			pstmt.setLong(5, comp.getId());
-			System.out.println("The request: " + pstmt.toString());
 
 			results = pstmt.executeUpdate();
 
-			System.out.println("Update done...");
+			log.info("Update done...");
 
 		} catch (SQLException e) {
 			 
 			e.printStackTrace();
-			System.out.println("Problem during update...");
+			log.error("Problem during update...");
 		}finally{
 			try {
 
@@ -1083,7 +558,7 @@ public class ComputDAOImpl implements ComputerDAO{
 		} catch (SQLException e) {
 			 
 			e.printStackTrace();
-			System.out.println("Problem during the count of result...");
+			log.error("Problem during the count of result...");
 		}finally{
 			try {
 

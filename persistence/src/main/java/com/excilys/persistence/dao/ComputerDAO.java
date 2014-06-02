@@ -1,6 +1,5 @@
 package com.excilys.persistence.dao;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.core.om.Computer;
@@ -8,26 +7,26 @@ import com.excilys.core.om.Computer;
 public interface ComputerDAO {
 
 	/**
-	 * Cherche un Computer par son Id
+	 * find a Computer by id
 	 * @param paramId
 	 * @return
 	 */
 	public Computer findById(Long paramId);
 	
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base
+	 * get all the computers in database
 	 * @return
 	 */
 	public List<Computer> retrieveAll();
 	
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base
+	 * count all the computers
 	 * @return
 	 */
 	public int count();
 	
 	/**
-	 * retourne le nombre de computer/ordinateur dans la base contenant le motif filter
+	 * count all the computer with name filtering
 	 * @param filter le motif
 	 * @param connection la connection
 	 * @return
@@ -35,25 +34,25 @@ public interface ComputerDAO {
 	public int countWithFilter(String filter);
 
 	/**
-	 * Insert un ordinateur/computer dans la base
+	 * Insert a computer in the database
 	 */
 	public Long create(Computer cp);
 
 	/**
-	 * Supprime l'ordinateur identifié en paramètre de la base de donnée
+	 * Delete the computer from database
 	 * @param id
 	 */
 	public void delete(Long id);
 	
 	/**
-	 * Met à jour un computer
+	 * Update a computer
 	 * @param computer
 	 */
 	public void update(Computer computer);
 	
 	
 	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base correspondant au motif avec intervalle de resultat et les critères de triage et d'ordre
+	 * Retrieve computers with the param given
 	 * @param word le motif à chercher
 	 * @param rang la page
 	 * @param interval le nombre d'element à afficher

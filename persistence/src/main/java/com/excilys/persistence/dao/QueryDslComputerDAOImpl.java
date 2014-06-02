@@ -120,7 +120,7 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 		List <Computer> tempList = null;
 		String paramWord = new StringBuilder("%").append(word).append("%").toString();
 		switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by Computer's name
 			if(isAsc){
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.asc()).list(qComputer);
 				break;
@@ -129,7 +129,7 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.desc()).list(qComputer);
 				break;
 			}
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			if(isAsc){
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.asc()).list(qComputer);
 				break;
@@ -138,7 +138,7 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.desc()).list(qComputer);
 				break;
 			}
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			if(isAsc){
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.asc()).list(qComputer);
 				break;
@@ -147,7 +147,7 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.desc()).list(qComputer);
 				break;
 			}
-		case 3: // par nom de Company
+		case 3: //by Company's name
 			if(isAsc){
 				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(company.name.asc()).list(qComputer);
 				break;

@@ -47,7 +47,7 @@ public class EditComputer {
 		System.out.println(computerDTO);
 
 		// On recupere la liste des Company
-		List<Company> companyList = companyService.getListCompany();		
+		List<Company> companyList = companyService.retrieveAll();		
 		modelMap.addAttribute("companyList", companyList);
 
 		return "editComputer";
@@ -65,7 +65,7 @@ public class EditComputer {
 			ComputerDTO oldComputerDTO = new ComputerDTO(computer);
 			modelMap.addAttribute("computerDTO", oldComputerDTO);
 
-			List<Company> companyList = companyService.getListCompany();
+			List<Company> companyList = companyService.retrieveAll();
 			modelMap.addAttribute("companyList", companyList);
 
 			return "editComputer";
@@ -87,22 +87,22 @@ public class EditComputer {
 
 			// On récupère la Company correspondante
 			if(!computerDTO.getIdCompany().equals("0"))
-				c.setCompany(companyService.findCompanyById(Long.parseLong(computerDTO.getIdCompany())));
+				c.setCompany(companyService.findById(Long.parseLong(computerDTO.getIdCompany())));
 			else
 				c.setCompany(null);
 
 			// On update le computer dans la base 
-			computerService.updateComputer(c);
+			computerService.update(c);
 
 			// compte le nb de Computer dans la base
-			int nbComputer = computerService.getNbComputer();
+			int nbComputer = computerService.count();
 			//			request.setAttribute("nbComputer", nbComputer);
 
 			// liste les Computers
-			List<Computer> computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, code, true);
+			List<Computer> computerList = computerService.retrieve(sFiltre, page, interval, code, true);
 			//			request.setAttribute("computerList", computerList);
 
-			int nbPage = (int) Math.ceil(computerService.getListComputers().size()/interval);
+			int nbPage = (int) Math.ceil(computerService.retrieveAll().size()/interval);
 
 			Page<Computer> laPage = new Page<>(nbComputer, page, interval, code, nbPage, sFiltre, computerList);
 			modelMap.addAttribute("pageComputer", laPage);

@@ -57,7 +57,7 @@
 	</bean>
 
 	<!-- enable the configuration of transactional behavior based on annotations -->
-	<tx:annotation-driven transaction-manager="txManager" mode="aspectj" />
+	<tx:annotation-driven transaction-manager="txManager" />
 
 
 

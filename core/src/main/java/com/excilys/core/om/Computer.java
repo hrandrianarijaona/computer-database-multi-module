@@ -171,8 +171,8 @@ public class Computer implements Serializable{
 	public static class ComputerBuilder{
 		private Long id;
 		private String name;
-		private DateTime introducedDate; // optionnel
-		private DateTime discontinuedDate; // optionnel
+		private DateTime introducedDate; // optional
+		private DateTime discontinuedDate; // optional
 		private Company company;
 		
 		public ComputerBuilder id(Long id){

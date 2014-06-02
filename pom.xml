@@ -51,6 +51,7 @@
 		<commons-dbcpVersion>1.4</commons-dbcpVersion> <!-- webapp module -->
 		<querydslVersion>3.3.4</querydslVersion> <!-- webapp module -->
 		<commons.logging.version>99.0-does-not-exist</commons.logging.version>
+		<springSecurityVersion>3.2.4.RELEASE</springSecurityVersion>
 	</properties>
 
 	<repositories>
@@ -62,11 +63,11 @@
 
 	<dependencies>
 
-<!-- 			<dependency> -->
-<!-- 				<groupId>commons-logging</groupId> -->
-<!-- 				<artifactId>commons-logging</artifactId> -->
-<!-- 				<version>${commons.logging.version}</version> -->
-<!-- 			</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>commons-logging</groupId> -->
+		<!-- <artifactId>commons-logging</artifactId> -->
+		<!-- <version>${commons.logging.version}</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -101,6 +102,20 @@
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${querydslVersion}</version>
 		</dependency>
+
+
+		<!-- Spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springSecurityVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springSecurityVersion}</version>
+		</dependency>
+
 	</dependencies>
 
 	<modules>

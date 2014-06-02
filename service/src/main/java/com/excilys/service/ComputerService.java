@@ -14,7 +14,7 @@ import com.excilys.persistence.dao.QueryDslComputerDAOImpl;
 
 
 /**
- * Classe Service de Computer
+ * Computer service
  * @author hrandr
  *
  */
@@ -66,7 +66,7 @@ public class ComputerService {
 	 * @return
 	 */
 	@Transactional(readOnly=true)
-	public List<Computer> getListComputers() {
+	public List<Computer> retrieveAll() {
 		List<Computer> lc = null;
 		log.info("Listing of Computers... ");
 		lc = computerDAO.retrieveAll();
@@ -81,8 +81,8 @@ public class ComputerService {
 	 * @return
 	 */
 	@Transactional(readOnly=true)
-	public int getNbComputer(){
-		log.info("getNbComputer... ");
+	public int count(){
+		log.info("count... ");
 		int nbComputer = computerDAO.count();
 
 		return nbComputer;
@@ -92,7 +92,7 @@ public class ComputerService {
 	 * Insert a Computer
 	 */
 	@Transactional(readOnly = false)
-	public void insertComputer(Computer cp) {
+	public void insert(Computer cp) {
 		Long id = null;
 		id = computerDAO.create(cp);
 	}
@@ -102,8 +102,8 @@ public class ComputerService {
 	 * @param id
 	 */
 	@Transactional(readOnly = false)
-	public void deleteComputer(Long id){
-		log.info("deleteComputer...");
+	public void delete(Long id){
+		log.info("delete...");
 
 		computerDAO.delete(id);
 		//			logService.addLog("Delete du computer id(" + id + ")", TypeLog.INFOS, connection);
@@ -122,10 +122,10 @@ public class ComputerService {
 	 * @return
 	 */
 	@Transactional(readOnly=true)
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc) {
+	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc) {
 
 		List<Computer> lc = null;
-		log.info("searchComputersByFilteringAndOrderingWithRange... ");
+		log.info("retrieve... ");
 		lc = computerDAO.retrieve(word, rang, interval, filter, isAsc);
 
 		return lc;
@@ -137,8 +137,8 @@ public class ComputerService {
 	 * @param comp le Computer à mettre à jour
 	 */
 	@Transactional(readOnly = false)
-	public void updateComputer(Computer comp){
-		log.info("updateComputer("+ comp.getId() +")... ");
+	public void update(Computer comp){
+		log.info("update("+ comp.getId() +")... ");
 		computerDAO.update(comp);
 		//			logService.addLog("updateComputer("+ comp.getId() +")... ", TypeLog.INFOS, connection);
 
@@ -150,8 +150,8 @@ public class ComputerService {
 	 * @return
 	 */
 	@Transactional(readOnly=true)
-	public int getNbComputerFilter(String filter) {
-		log.info("getNbComputerFilter(" + filter + ")... ");
+	public int countWithFilter(String filter) {
+		log.info("countWithFilter(" + filter + ")... ");
 		int nbComputer = computerDAO.countWithFilter(filter);
 
 		return nbComputer;

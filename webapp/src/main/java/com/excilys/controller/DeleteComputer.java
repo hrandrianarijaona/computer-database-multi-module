@@ -34,11 +34,11 @@ public class DeleteComputer {
 			modelMap.addAttribute("msg", sb.toString());
 
 			// compte le nb de Computer dans la base
-			int nbComputer = computerService.getNbComputer();
+			int nbComputer = computerService.count();
 			modelMap.addAttribute("nbComputer", nbComputer);
 
 			// liste les Computers
-			List<Computer> computerList = computerService.getListComputers();
+			List<Computer> computerList = computerService.retrieveAll();
 			modelMap.addAttribute("computerList", computerList);
 
 			//			this.getServletContext().getRequestDispatcher( "/WEB-INF/dashboard.jsp" ).forward( request, response );
@@ -47,14 +47,14 @@ public class DeleteComputer {
 		}
 		else{
 			// On supprime le Computer de la base
-			computerService.deleteComputer(id);
+			computerService.delete(id);
 
 			// compte le nb de Computer dans la base
-			int nbComputer = computerService.getNbComputer();
+			int nbComputer = computerService.count();
 			modelMap.addAttribute("nbComputer", nbComputer);
 
 			// liste les Computers
-			List<Computer> computerList = computerService.getListComputers();
+			List<Computer> computerList = computerService.retrieveAll();
 			modelMap.addAttribute("computerList", computerList);
 
 			//			this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward( request, response );

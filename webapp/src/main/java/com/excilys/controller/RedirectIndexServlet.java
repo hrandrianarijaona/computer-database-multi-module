@@ -78,35 +78,35 @@ public class RedirectIndexServlet extends HttpServlet {
 		switch(c){
 		case 0:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(0, true);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 0, true);
+			computerList = computerService.retrieve(sFiltre, page, interval, 0, true);
 			break;
 		case 1:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(0, false);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 0, false);
+			computerList = computerService.retrieve(sFiltre, page, interval, 0, false);
 			break;
 		case 2:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(1, true);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 1, true);
+			computerList = computerService.retrieve(sFiltre, page, interval, 1, true);
 			break;
 		case 3:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(1, false);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 1, false);
+			computerList = computerService.retrieve(sFiltre, page, interval, 1, false);
 			break;
 		case 4:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(2, true);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 2, true);
+			computerList = computerService.retrieve(sFiltre, page, interval, 2, true);
 			break;
 		case 5:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(2, false);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 2, false);
+			computerList = computerService.retrieve(sFiltre, page, interval, 2, false);
 			break;
 		case 6:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(3, true);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 3, true);
+			computerList = computerService.retrieve(sFiltre, page, interval, 3, true);
 			break;
 		case 7:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(3, false);
-			computerList = computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, page, interval, 3, false);
+			computerList = computerService.retrieve(sFiltre, page, interval, 3, false);
 			break;
 		default:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(0, true);
@@ -114,7 +114,7 @@ public class RedirectIndexServlet extends HttpServlet {
 		}
 
 		// compte le nb de Computer dans la base
-		int nbComputer = computerService.getNbComputerFilter(sFiltre);
+		int nbComputer = computerService.countWithFilter(sFiltre);
 //		System.out.println("*********************************************nb computer = " + nbComputer);
 //		System.out.println("*********************************************nb computer2 = " + computerList.size());
 //		for (Computer c1 : computerList) {
@@ -126,13 +126,13 @@ public class RedirectIndexServlet extends HttpServlet {
 		//		request.setAttribute("computerList", computerList);
 
 		// tous les Computer pour la navigation
-		List<Computer> allComputerList = computerService.getListComputers();
+		List<Computer> allComputerList = computerService.retrieveAll();
 		//		request.setAttribute("allComputerList", allComputerList);
 
 		// calcul du nombre de page
 		int nbPage;
 		if(sFiltre.length()>0)
-			nbPage = (int) Math.ceil(computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, 0, interval, 3, false).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
+			nbPage = (int) Math.ceil(computerService.retrieve(sFiltre, 0, interval, 3, false).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
 		else
 			nbPage = (int) Math.ceil(allComputerList.size()/interval);
 		//		request.setAttribute("nbPage", nbPage);

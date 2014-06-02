@@ -73,6 +73,18 @@
 			<version>${springVersion}</version>
 		</dependency>
 
+		<!-- Spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springSecurityVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springSecurityVersion}</version>
+		</dependency>
+		
 		<!-- Other dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -96,6 +108,7 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>${commons-dbcpVersion}</version>
 		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>webapp</finalName>

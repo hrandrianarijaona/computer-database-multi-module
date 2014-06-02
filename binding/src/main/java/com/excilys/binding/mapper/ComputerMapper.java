@@ -19,7 +19,7 @@ public class ComputerMapper {
 		DateTime introducedDate = null;
 		DateTime discontinuedDate = null;
 		Long idCompany = Long.parseLong(cdto.getIdCompany());
-		Company company = companyService.findCompanyById(idCompany);
+		Company company = companyService.findById(idCompany);
 		
 		if(cdto.getIntroducedDate()!=null)
 			introducedDate = new DateTime(cdto.getIntroducedDate());

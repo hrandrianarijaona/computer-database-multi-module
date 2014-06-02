@@ -96,13 +96,11 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		EntityTransaction transac = em2.getTransaction();
 		transac.begin();
 		
-		System.out.println("avant: " + cp);
 		em2.persist(cp);
 		em2.flush();
 		
 		transac.commit();
 		em2.close();
-		System.out.println("apres: " + cp);
 		
 	
 		return cp.getId();
@@ -114,7 +112,6 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		transac.begin();
 		Computer computer = findById(id);
 		if (computer != null){
-			System.out.println("Computer trouvé: " + computer);
 //			getCurrentSession().delete(computer);
 			if(!em2.isOpen()){
 				em2 = entityManagerFactory.createEntityManager();
@@ -158,7 +155,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		
         
         switch(filter){
-		case 0: // par nom de Computer
+		case 0: // by Computer's name
 			if(isAsc){
 				criteriaQuery.orderBy(criteriaBuilder.asc(root.get("name")));
 				break;
@@ -167,7 +164,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 				criteriaQuery.orderBy(criteriaBuilder.desc(root.get("name")));
 				break;
 			}
-		case 1: // par introducedDate
+		case 1: // by introducedDate
 			if(isAsc){
 				criteriaQuery.orderBy(criteriaBuilder.asc(root.get("introducedDate")));
 				break;
@@ -176,7 +173,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 				criteriaQuery.orderBy(criteriaBuilder.desc(root.get("introducedDate")));
 				break;
 			}
-		case 2: // par discontinuedDate
+		case 2: // by discontinuedDate
 			if(isAsc){
 				criteriaQuery.orderBy(criteriaBuilder.asc(root.get("discontinuedDate")));
 				break;
@@ -185,7 +182,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 				criteriaQuery.orderBy(criteriaBuilder.desc(root.get("discontinuedDate")));
 				break;
 			}
-		case 3: // par nom de Company
+		case 3: // by Company's name
 			if(isAsc){
 				criteriaQuery.orderBy(criteriaBuilder.asc(root.get("company.name")));
 				break;
@@ -207,38 +204,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
         
 //		Here entity manager will create actual SQL query out of criteria query
         final TypedQuery query = entityManager.createQuery(criteriaQuery);
-        
-        
-		
-//		criteriaQuery.select(root);
-		
-//		-----------------------------------------------------------------------------------------------
-		
-//		String sFilter;
-//		switch(filter){
-//		case 0: // par nom de Computer
-//			sFilter = "pc.name"; break;
-//		case 1: // par introducedDate
-//			sFilter = "pc.introducedDate"; break;
-//		case 2: // par discontinuedDate
-//			sFilter = "pc.discontinuedDate"; break;
-//		case 3: // par nom de Company
-//			sFilter = "co.name"; break;
-//		default:
-//			sFilter = "pc.name"; break;
-//		}
-//
-//		if(!isAsc)
-//			sFilter = sFilter + " DESC";
-//
-//		sFilter = sFilter + ", pc.name ASC ";
-//		// requete de recherche du pattern
-//		String query = "select pc, co from Computer as pc left outer join fetch pc.company as co where pc.name LIKE ? or co.name LIKE ? ORDER BY " + sFilter;
-//		String paramWord = new StringBuilder("%").append(word).append("%").toString();
-//
-//		List <Computer> tempList = entityManager.createQuery(query).setParameter(1, paramWord).setParameter(2, paramWord).setFirstResult(rang*interval).setMaxResults(interval).getResultList();
-//		
-		
+	
         List<Computer> tempList = query.setFirstResult(rang*interval).setMaxResults(interval).getResultList();
         List<Computer> result = new ArrayList<>();
 		for (Object o : tempList) {

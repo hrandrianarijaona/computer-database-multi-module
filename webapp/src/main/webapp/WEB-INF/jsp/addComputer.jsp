@@ -111,6 +111,9 @@
 <c:set var="cancel">
 	<spring:message code="add.button.cancel" text="Cancel" />
 </c:set>
+<c:set var="d_pattern">
+	<spring:message code="add.date_pattern" text="\d{1,2}-\d{1,2}-\d{4}" />
+</c:set>
 
 <section id="main">
 
@@ -132,8 +135,8 @@
 				<label for="introduced"><spring:message code="add.introduced" text="Introduced date" />:</label>
 				<div class="input-group">
 					<form:input path="introducedDate" type="date" id="introducedDate"
-						name="introducedDate" pattern="\d{4}-\d{1,2}-\d{1,2}"/> <span
-						class="help-inline">YYYY-MM-DD</span>
+						name="introducedDate" pattern="${d_pattern}"/> <span
+						class="help-inline"><spring:message code="add.date_format" text="Required" /></span>
 						<span><form:errors path="introducedDate" cssClass="error" /></span>
 				</div>
 			</div>
@@ -141,8 +144,8 @@
 				<label for="discontinued"><spring:message code="add.discontinued" text="Discontinued date" />:</label>
 				<div class="input-group">
 					<form:input path="discontinuedDate" type="date" id="discontinuedDate"
-						name="discontinuedDate" pattern="\d{4}-\d{1,2}-\d{1,2}"/> <span
-						class="help-inline">YYYY-MM-DD</span>
+						name="discontinuedDate" pattern="${d_pattern}"/> <span
+						class="help-inline"><spring:message code="add.date_format" text="Required" /></span>
 						<span><form:errors path="discontinuedDate" cssClass="error" /></span>
 				</div>
 			</div>

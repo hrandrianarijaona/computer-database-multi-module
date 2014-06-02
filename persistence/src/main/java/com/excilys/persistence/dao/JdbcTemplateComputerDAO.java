@@ -78,47 +78,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	//	public Long insertComputer(Computer comp) {
-	//
-	//		//		SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName("computer").usingGeneratedKeyColumns("id");
-	//		//		Map<String, Object> parameters = new HashMap<String, Object>();  
-	//		//		parameters.put("name", cp.getName());  
-	//		//		parameters.put("introduced", cp.getIntroducedDate());  
-	//		//		parameters.put("discontinued", cp.getDiscontinuedDate());
-	//		//		parameters.put("company_id", cp.getCompany().getId());
-	//		//		Number key = insert.executeAndReturnKey(parameters); 
-	//		//		System.out.println("Je rajoute le pc!!!");
-	//		//
-	//		//		return 1111111100000l;
-	//
-	//		System.out.println("Ajoutation...");
-	//
-	//		Object introduced=null;
-	//		Object discontinued=null;
-	//		Long company=null;
-	//		if(comp.getIntroducedDate()!=null) {
-	//			introduced=new Date(comp.getIntroducedDate().getMillis());
-	//		}else{
-	//			introduced=Types.NULL;
-	//		}
-	//		if (comp.getDiscontinuedDate()!=null) {
-	//			discontinued=new Date(comp.getDiscontinuedDate().getMillis());
-	//		}else {
-	//			discontinued=Types.NULL;
-	//		}	
-	//		if (comp.getCompany()!=null) {
-	//			company=comp.getCompany().getId();
-	//		}
-	//		JdbcTemplate insert = this.jdbcTemplate;
-	//		Object[] parameter=new Object[]{comp.getName(),introduced,discontinued,company};
-	//		int rs=insert.update("INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)", parameter);
-	//
-	//		return (long) rs;
-	//
-	//
-	//
-	//	}
-
 
 	private void writeComputer(PreparedStatement ps, Computer cp) throws SQLException {
 		ps.setString(1, cp.getName());
@@ -161,49 +120,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 		jdbcTemplate.update(query, id);
 	}
 
-
-	public List<Computer> searchComputersByFilteringAndOrdering(String word, int filter, boolean isAsc) {
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		String query;
-
-		if(isAsc)
-			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + ";";
-		else
-			query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.name LIKE ? ORDER BY " + sFilter + " DESC;";
-
-		List<Computer> computers = jdbcTemplate.query(query, 
-				new RowMapper<Computer>(){
-			public Computer mapRow(ResultSet rs, int rowNum)
-					throws SQLException{
-				Computer computer = Computer.builder().build();
-				computer.setId(rs.getLong("pc.id"));
-				computer.setName(rs.getString("pc.name"));
-				computer.setIntroducedDate(new DateTime(rs.getDate("pc.introduced")));
-				computer.setDiscontinuedDate(new DateTime(rs.getDate("pc.discontinued")));
-				computer.setCompany(Company.builder().id(rs.getLong("comp.id")).name(rs.getString("comp.name")).build());
-				return computer;
-			}
-		}, new StringBuilder("%").append(word).append("%").toString()
-
-				);
-
-		return computers;
-	}
-
-
 	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc) {
 
 		String sFilter;
@@ -239,91 +155,6 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 				return computer;
 			}
 		}, new Object[] {new StringBuilder("%").append(word).append("%").toString(), rang*interval, interval}
-
-				);
-
-		return computers;
-	}
-
-
-	public List<Computer> getListComputersByFilteringAndOrdering(int filter, boolean isAsc) {
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-
-		sFilter = sFilter + ", pc.name ASC";
-
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + ";";
-
-
-		List<Computer> computers = jdbcTemplate.query(query, 
-				new RowMapper<Computer>(){
-			public Computer mapRow(ResultSet rs, int rowNum)
-					throws SQLException{
-				Computer computer = Computer.builder().build();
-				computer.setId(rs.getLong("pc.id"));
-				computer.setName(rs.getString("pc.name"));
-				computer.setIntroducedDate(new DateTime(rs.getDate("pc.introduced")));
-				computer.setDiscontinuedDate(new DateTime(rs.getDate("pc.discontinued")));
-				computer.setCompany(Company.builder().id(rs.getLong("comp.id")).name(rs.getString("comp.name")).build());
-				return computer;
-			}
-		}
-
-				);
-
-		return computers;
-	}
-
-
-	public List<Computer> getListComputersByFilteringAndOrderingWithRange(int rang, int interval, int filter, boolean isAsc) {
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introduced"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinued"; break;
-		case 3: // par nom de Company
-			sFilter = "comp.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-
-		sFilter = sFilter + ", pc.name ASC ";
-
-		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY " + sFilter + " LIMIT ?,?;";
-
-		List<Computer> computers = jdbcTemplate.query(query, 
-				new RowMapper<Computer>(){
-			public Computer mapRow(ResultSet rs, int rowNum)
-					throws SQLException{
-				Computer computer = Computer.builder().build();
-				computer.setId(rs.getLong("pc.id"));
-				computer.setName(rs.getString("pc.name"));
-				computer.setIntroducedDate(new DateTime(rs.getDate("pc.introduced")));
-				computer.setDiscontinuedDate(new DateTime(rs.getDate("pc.discontinued")));
-				computer.setCompany(Company.builder().id(rs.getLong("comp.id")).name(rs.getString("comp.name")).build());
-				return computer;
-			}
-		}, new Object[] {rang*interval, interval}
 
 				);
 

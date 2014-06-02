@@ -23,7 +23,7 @@ public interface CompanyDAO {
 	/**
 	 * Search a Company
 	 * @param paramId l'id à rechercher
-	 * @return L'objet Company
+	 * @return the Company
 	 */
 	public Company findById(Long paramId);
 

@@ -17,6 +17,10 @@ import javax.sql.DataSource;
 
 
 
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +34,7 @@ import com.excilys.persistence.connection.JdbcDatasource;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
- * Classe de DAO pour Company
+ * DAO for Company
  * @author hrandr
  *
  */
@@ -47,7 +51,8 @@ public class CompanyDAOImpl implements CompanyDAO{
 	
 	private CompanyDAOImpl() {
 	}
-	//private Logger log = LoggerFactory.getLogger(this.getClass());
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * Give an instance
@@ -65,12 +70,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 		
 		
 		Connection connection = null;
-//		try {
-//			connection = connectionFactory.getConnection();
-//		} catch (SQLException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+
 		connection = DataSourceUtils.getConnection(datasource);
 		
 		ArrayList<Company> al = new ArrayList<Company>();
@@ -89,23 +89,22 @@ public class CompanyDAOImpl implements CompanyDAO{
 					Long id = results.getLong("id");
 					String name = results.getString("name");
 
-					al.add(Company.builder().id(id).name(name).build()); // Company créer avec le pattern Builder
-					// al.add(new Company(id, name));
+					al.add(Company.builder().id(id).name(name).build()); // Company create with pattern Builder
 
 				}
 
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de listing...");
-				throw new RuntimeException("Problème dans la requete de listing niveau DAO..");
+				log.error("Problem during retrieveAll()...");
+				throw new RuntimeException("Problem during retrieveAll()...");
 			} finally{
 				JdbcDatasource.closeObject(results, stmt);
 				
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			log.error("connection is null...");
 		}
 
 		return al;
@@ -149,15 +148,15 @@ public class CompanyDAOImpl implements CompanyDAO{
 			} catch (SQLException e1) {
 				
 				e1.printStackTrace();
-				System.out.println("Probleme dans la génération des id Company...");
-				throw new RuntimeException("Problème dans la requete de listing niveau DAO..");
+				log.error("Insert() => Problem during id Company generation...");
+				throw new RuntimeException("Insert() => Problem during id Company generation...");
 			}
 
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
-			System.out.println("Probleme dans la requete d'insertion...");
-			throw new RuntimeException("Problème dans la requete de listing niveau DAO..");
+			log.error("Problem during insertion...");
+			throw new RuntimeException("Problem during insertion...");
 		}finally{
 			JdbcDatasource.closeObject(results, pstmt);
 		}
@@ -167,8 +166,8 @@ public class CompanyDAOImpl implements CompanyDAO{
 
 	/**
 	 * Search a Company
-	 * @param paramId l'id à rechercher
-	 * @return L'objet Company
+	 * @param paramId the id to search
+	 * @return the Company
 	 */
 	public Company findById(Long paramId){
 		
@@ -200,14 +199,14 @@ public class CompanyDAOImpl implements CompanyDAO{
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
-				System.out.println("Problème dans la requete de recherche de company...");
-				throw new RuntimeException("Problème dans la requete de listing niveau DAO..");
+				log.error("Problem during the search of the company");
+				throw new RuntimeException("Problem during the search of the company");
 			} finally{
 				JdbcDatasource.closeObject(results, pstmt, connection);
 			}
 		}
 		else{
-			System.out.println("La connection est null...");
+			log.error("The connection is null...");
 		}
 
 		return company;

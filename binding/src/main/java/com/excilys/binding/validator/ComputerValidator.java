@@ -25,8 +25,8 @@ public class ComputerValidator {
 	 * champ 4 => idCompany
 	 * Error code:
 	 * 1 => empty
-	 * 2 => Valeur erroné
-	 * 3 => Date doit être supérieur
+	 * 2 => wrong value
+	 * 3 => Date must be superior
 	 * @return
 	 */
 	public static HashMap<Integer, Integer> validate(ComputerDTO cdto){
@@ -35,22 +35,21 @@ public class ComputerValidator {
 		//Pattern checkDate = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)\\d\\d)");
 		Pattern checkDate = Pattern.compile("[0-9]{4}-[0-1][0-9]-[0-3][0-9]");
 
-		// Validation du nom de Computer
+		// check computer's name
 		if((cdto.getName().equals(""))||(cdto.getName()==null))
 			errorMap.put(1, 1);
 
-		// Validation du format des dates
+		// check date format
 		Matcher m = checkDate.matcher(cdto.getIntroducedDate());
 		if((!m.matches())||(!checkDay(cdto.getIntroducedDate()))){
 			errorMap.put(2, 2);
 		}
 		else{
-			// On verifie le format de la date
 			m = checkDate.matcher(cdto.getDiscontinuedDate());
 			if((!m.matches())||(!checkDay(cdto.getDiscontinuedDate()))){
 				errorMap.put(3, 2);
 			}else{
-				// On verifie quel est supérieur à l'autre date
+				// discontinuedDate must be superior
 				DateTime intro = new DateTime(cdto.getIntroducedDate());
 				DateTime disc = new DateTime(cdto.getDiscontinuedDate());
 				if(intro.isAfter(disc)){
@@ -60,7 +59,7 @@ public class ComputerValidator {
 
 		}
 
-		// Verification sur idCompany
+		// check idCompany
 		if(Integer.parseInt(cdto.getIdCompany())<0)
 			errorMap.put(4, 2);		
 
