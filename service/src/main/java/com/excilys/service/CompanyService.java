@@ -1,6 +1,5 @@
 package com.excilys.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.core.om.Company;
-import com.excilys.persistence.dao.CompanyDAOImpl;
-import com.excilys.persistence.dao.HibernateCompanyDAOImpl;
-import com.excilys.persistence.dao.JdbcTemplateCompanyDAO;
+import com.excilys.persistence.dao.QueryDslCompanyDAOImpl;
 
 /**
  * Classe singleton de service pour Company
@@ -32,9 +29,11 @@ public class CompanyService {
 //	@Autowired
 //	private JdbcTemplateCompanyDAO companyDAO;
 	
-	@Autowired
-	private HibernateCompanyDAOImpl companyDAO;
+//	@Autowired
+//	private HibernateCompanyDAOImpl companyDAO;
 	
+	@Autowired
+	private QueryDslCompanyDAOImpl companyDAO;
 	
 	/**
 	 * get an Instance of Company
@@ -52,7 +51,7 @@ public class CompanyService {
 	public List<Company> getListCompany() {
 		List<Company> lc = null;
 		log.info("getListCompany... ");
-		lc = companyDAO.getListCompany();
+		lc = companyDAO.retrieveAll();
 		
 		return lc;
 	}
@@ -65,7 +64,7 @@ public class CompanyService {
 	public void insertCompany(Company cp) {
 		Long id = null;
 		//			connection.setAutoCommit(false);
-					id = companyDAO.insertCompany(cp);
+					id = companyDAO.insert(cp);
 					log.info("insertCompany(" + id + ")");
 		//			logService.addLog("insertCompany(" + id + ")", TypeLog.INFOS, connection);
 		
@@ -80,7 +79,7 @@ public class CompanyService {
 	public Company findCompanyById(Long paramId){
 		Company cpy = null;
 		log.info("findCompanyById(" + paramId + ") ");
-		cpy = companyDAO.findCompanyById(paramId);
+		cpy = companyDAO.findById(paramId);
 		
 		return cpy;
 	}

@@ -61,7 +61,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	 * get all Company
 	 * @return
 	 */
-	public List<Company> getListCompany() {
+	public List<Company> retrieveAll() {
 		
 		
 		Connection connection = null;
@@ -115,7 +115,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	 * Insert a Company
 	 * @param cp
 	 */
-	public Long insertCompany(Company cp) {
+	public Long insert(Company cp) {
 
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
@@ -170,7 +170,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	 * @param paramId l'id à rechercher
 	 * @return L'objet Company
 	 */
-	public Company findCompanyById(Long paramId){
+	public Company findById(Long paramId){
 		
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);

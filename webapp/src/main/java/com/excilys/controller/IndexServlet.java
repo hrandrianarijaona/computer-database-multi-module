@@ -127,7 +127,7 @@ public class IndexServlet{
 		// calcul du nombre de page
 		int nbPage;
 		if(sFiltre.length()>0)
-			nbPage = (int) Math.ceil(computerService.searchComputersByFilteringAndOrdering(sFiltre, 0, true).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
+			nbPage = (int) Math.ceil(computerService.searchComputersByFilteringAndOrderingWithRange(sFiltre, 0, interval, 3, false).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
 		else
 			nbPage = (int) Math.ceil(allComputerList.size()/interval);
 		//		request.setAttribute("nbPage", nbPage);

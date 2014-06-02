@@ -29,7 +29,7 @@ public class HibernateCompanyDAOImpl implements CompanyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Company> getListCompany() {
+	public List<Company> retrieveAll() {
 		List<Company> tempList = entityManager.createQuery("from Company").getResultList();
 		List<Company> result = new ArrayList<>();
 		for (Object o : tempList) {
@@ -38,13 +38,13 @@ public class HibernateCompanyDAOImpl implements CompanyDAO {
 		return result;
 	}
 
-	public Long insertCompany(Company cp) {
+	public Long insert(Company cp) {
 		//getCurrentSession().save(cp);
 		entityManager.merge(cp);
 		return 0l;
 	}
 
-	public Company findCompanyById(Long paramId) {
+	public Company findById(Long paramId) {
 		Company company = entityManager.find(Company.class, paramId);
         return company;
 	}

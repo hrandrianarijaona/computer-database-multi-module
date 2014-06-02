@@ -22,40 +22,84 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
 	</build>
 
+
+
+	<!-- binding => core/service -->
+	<!-- webapp => core/persistence/service/binding -->
+	<!-- persistence => core -->
+	<!-- service => persistence -->
+
+
+
 	<properties>
-		<spring.version>4.0.4.RELEASE</spring.version>
-		<hibernateVersion>4.3.5.Final</hibernateVersion>
+		<springVersion>4.0.4.RELEASE</springVersion> <!-- all module -->
+		<hibernateVersion>4.3.5.Final</hibernateVersion> <!-- persistence/core module -->
+		<hibernate-validatorVersion>5.1.1.Final</hibernate-validatorVersion> <!-- binding module -->
+		<joda-timeVersion>2.3</joda-timeVersion> <!-- core module -->
+		<joda-time-jsptagsVersion>1.1.1</joda-time-jsptagsVersion> <!-- core module -->
+		<jadiraVersion>3.2.0.GA</jadiraVersion> <!-- core module -->
+		<slf4j-apiVersion>1.7.7</slf4j-apiVersion> <!-- persistence module -->
+		<mysql-connector-javaVersion>5.1.30</mysql-connector-javaVersion> <!-- persistence module -->
+		<bonecpVersion>0.8.0.RELEASE</bonecpVersion> <!-- persistence module -->
+		<guavaVersion>17.0</guavaVersion> <!-- persistence module -->
+		<servlet-apiVersion>3.0-alpha-1</servlet-apiVersion> <!-- webapp module -->
+		<jstlVersion>1.2</jstlVersion> <!-- webapp module -->
+		<taglibsVersion>1.1.2</taglibsVersion> <!-- webapp module -->
+		<commons-dbcpVersion>1.4</commons-dbcpVersion> <!-- webapp module -->
+		<querydslVersion>3.3.4</querydslVersion> <!-- webapp module -->
+		<commons.logging.version>99.0-does-not-exist</commons.logging.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>excilys</id>
+			<url>http://repository.excilys.com/content/repositories/thirdparty/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		
+
+<!-- 			<dependency> -->
+<!-- 				<groupId>commons-logging</groupId> -->
+<!-- 				<artifactId>commons-logging</artifactId> -->
+<!-- 				<version>${commons.logging.version}</version> -->
+<!-- 			</dependency> -->
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
+			<version>${springVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
+			<version>${springVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
+			<version>${springVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
+			<version>${springVersion}</version>
+		</dependency>
+		<!-- QueryDsl -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydslVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydslVersion}</version>
 		</dependency>
 	</dependencies>
 

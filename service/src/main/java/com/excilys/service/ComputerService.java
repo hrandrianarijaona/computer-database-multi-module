@@ -1,6 +1,5 @@
 package com.excilys.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,10 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.persistence.dao.ComputerDAOImpl;
-import com.excilys.persistence.dao.HibernateComputerDAOImpl;
-import com.excilys.persistence.dao.JdbcTemplateComputerDAO;
 import com.excilys.core.om.Computer;
+import com.excilys.persistence.dao.QueryDslComputerDAOImpl;
 
 
 /**
@@ -32,8 +29,11 @@ public class ComputerService {
 //	@Autowired
 //	private JdbcTemplateComputerDAO computerDAO;
 	
+//	@Autowired
+//	private HibernateComputerDAOImpl computerDAO;
+	
 	@Autowired
-	private HibernateComputerDAOImpl computerDAO;
+	private QueryDslComputerDAOImpl computerDAO;
 	
 //	@Autowired
 //	private LogServiceImpl logService;
@@ -56,7 +56,7 @@ public class ComputerService {
 	public Computer findComputerById(Long paramId){
 
 		log.info("findComputerById... ");
-		Computer computer = computerDAO.findComputerById(paramId);
+		Computer computer = computerDAO.findById(paramId);
 
 		return computer;
 	}
@@ -69,29 +69,11 @@ public class ComputerService {
 	public List<Computer> getListComputers() {
 		List<Computer> lc = null;
 		log.info("Listing of Computers... ");
-		lc = computerDAO.getListComputers();
+		lc = computerDAO.retrieveAll();
 		//			logService.addLog("Listing des Computers effectué...", TypeLog.INFOS, connection);
 
 		return lc;
 	}
-
-	/**
-	 * get Computer by filtering and ordering
-	 * @param 0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	public List<Computer> getListComputersByFilteringAndOrdering(int filter, boolean isAsc) {
-		log.info("getListComputersByFilteringAndOrdering... ");
-		List<Computer> lc = null;
-
-		lc = computerDAO.getListComputersByFilteringAndOrdering(filter, isAsc);
-
-
-		return lc;
-	}
-
 
 
 	/**
@@ -101,7 +83,7 @@ public class ComputerService {
 	@Transactional(readOnly=true)
 	public int getNbComputer(){
 		log.info("getNbComputer... ");
-		int nbComputer = computerDAO.getNbComputer();
+		int nbComputer = computerDAO.count();
 
 		return nbComputer;
 	}
@@ -109,40 +91,25 @@ public class ComputerService {
 	/**
 	 * Insert a Computer
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false)
 	public void insertComputer(Computer cp) {
 		Long id = null;
-		id = computerDAO.insertComputer(cp);
+		id = computerDAO.create(cp);
 	}
 
 	/**
 	 * delete a Computer
 	 * @param id
 	 */
-	@Transactional
+	@Transactional(readOnly = false)
 	public void deleteComputer(Long id){
 		log.info("deleteComputer...");
 
-		computerDAO.deleteComputer(id);
+		computerDAO.delete(id);
 		//			logService.addLog("Delete du computer id(" + id + ")", TypeLog.INFOS, connection);
 
 	}
 
-	/**
-	 * search Computer by filtering and ordering
-	 * @param word le mot ou schema à rechercher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	public List<Computer> searchComputersByFilteringAndOrdering(String word, int filter, boolean isAsc) {
-		List<Computer> lc = null;
-		log.info("searchComputersByFilteringAndOrdering... ");
-		lc = computerDAO.searchComputersByFilteringAndOrdering(word, filter, isAsc);
-
-		return lc;
-	}
 
 
 	/**
@@ -159,38 +126,20 @@ public class ComputerService {
 
 		List<Computer> lc = null;
 		log.info("searchComputersByFilteringAndOrderingWithRange... ");
-		lc = computerDAO.searchComputersByFilteringAndOrderingWithRange(word, rang, interval, filter, isAsc);
+		lc = computerDAO.retrieve(word, rang, interval, filter, isAsc);
 
 		return lc;
 	}
 
-
-	/**
-	 * search Computer by filtering and ordering with range
-	 * @param rang la page
-	 * @param interval le nombre d'element à afficher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	public List<Computer> getListComputersByFilteringAndOrderingWithRange(int rang, int interval, int filter, boolean isAsc){
-
-		List<Computer> lc = null;
-		log.info("getListComputersByFilteringAndOrderingWithRange... ");
-		lc = computerDAO.getListComputersByFilteringAndOrderingWithRange(rang, interval, filter, isAsc);
-
-		return lc;
-	}
 
 	/**
 	 * update a Computer
 	 * @param comp le Computer à mettre à jour
 	 */
-	@Transactional
+	@Transactional(readOnly = false)
 	public void updateComputer(Computer comp){
 		log.info("updateComputer("+ comp.getId() +")... ");
-		computerDAO.updateComputer(comp);
+		computerDAO.update(comp);
 		//			logService.addLog("updateComputer("+ comp.getId() +")... ", TypeLog.INFOS, connection);
 
 	}
@@ -203,7 +152,7 @@ public class ComputerService {
 	@Transactional(readOnly=true)
 	public int getNbComputerFilter(String filter) {
 		log.info("getNbComputerFilter(" + filter + ")... ");
-		int nbComputer = computerDAO.getNbComputerFilter(filter);
+		int nbComputer = computerDAO.countWithFilter(filter);
 
 		return nbComputer;
 	}

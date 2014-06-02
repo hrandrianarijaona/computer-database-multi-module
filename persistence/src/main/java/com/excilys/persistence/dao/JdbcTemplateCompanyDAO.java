@@ -26,7 +26,7 @@ public class JdbcTemplateCompanyDAO implements CompanyDAO {
 	public JdbcTemplateCompanyDAO() {
 	}
 
-	public List<Company> getListCompany() {
+	public List<Company> retrieveAll() {
 		String query = "SELECT * FROM company;";
 		List<Company> companies = jdbcTemplate.query(query, 
 				new RowMapper<Company>(){
@@ -45,7 +45,7 @@ public class JdbcTemplateCompanyDAO implements CompanyDAO {
 	}
 
 
-	public Long insertCompany(Company cp) {
+	public Long insert(Company cp) {
 		String query = "INSERT INTO company(name) VALUES(?);";
 		jdbcTemplate.update(query, new Object[] { cp.getName() });
 		return 0l;
@@ -53,7 +53,7 @@ public class JdbcTemplateCompanyDAO implements CompanyDAO {
 
 
 
-	public Company findCompanyById(Long paramId) {
+	public Company findById(Long paramId) {
 		String query = "SELECT * FROM company WHERE id=?;";
 		Company company ;
 		

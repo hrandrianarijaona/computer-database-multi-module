@@ -52,7 +52,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * @param paramId id of the Computer
 	 * @return instance of the Computer
 	 */
-	public Computer findComputerById(Long paramId){
+	public Computer findById(Long paramId){
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
 		try {
@@ -122,7 +122,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * Get all the Computers
 	 * @return
 	 */
-	public List<Computer> getListComputers() {
+	public List<Computer> retrieveAll() {
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -268,7 +268,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * Count the Computer
 	 * @return
 	 */
-	public int getNbComputer(){
+	public int count(){
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -323,7 +323,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	/**
 	 * Insert a Computer
 	 */
-	public Long insertComputer(Computer cp) {
+	public Long create(Computer cp) {
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -399,7 +399,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * delete a Computer
 	 * @param id
 	 */
-	public void deleteComputer(Long id){
+	public void delete(Long id){
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -701,7 +701,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc) {
+	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc) {
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -997,7 +997,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * Met à jour un Computer de la base
 	 * @param comp le Computer à mettre à jour
 	 */
-	public void updateComputer(Computer comp){
+	public void update(Computer comp){
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;
@@ -1054,7 +1054,7 @@ public class ComputDAOImpl implements ComputerDAO{
 	 * @param connection la connection
 	 * @return
 	 */
-	public int getNbComputerFilter(String filter) {
+	public int countWithFilter(String filter) {
 		
 		Logger log = LoggerFactory.getLogger(this.getClass());
 		Connection connection = null;

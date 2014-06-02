@@ -38,7 +38,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public List<Computer> getListComputers() {
+	public List<Computer> retrieveAll() {
 		
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id ORDER BY pc.name;";
 		List<Computer> computers = jdbcTemplate.query(query, 
@@ -61,7 +61,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public int getNbComputer() {
+	public int count() {
 		String query = "SELECT COUNT(*) AS nb FROM computer;";
 		int nb = jdbcTemplate.queryForObject(query, Integer.class);
 		System.out.println("Il y a " + nb + "computeure");
@@ -69,7 +69,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public int getNbComputerFilter(String filter) {
+	public int countWithFilter(String filter) {
 		int size=0;
 		JdbcTemplate select = this.jdbcTemplate;
 		size=select.queryForObject("SELECT COUNT(*) FROM computer WHERE name LIKE ?",new Object[]{new StringBuilder("%").append(filter).append("%")},Integer.class);
@@ -140,7 +140,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	 * Modifiers
 	 */
 
-	public Long insertComputer(final Computer entity) {
+	public Long create(final Computer entity) {
 
 		final String query = "insert into computer (name,introduced, discontinued, company_id) values (?,?,?,?)";
 
@@ -156,7 +156,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public void deleteComputer(Long id) {
+	public void delete(Long id) {
 		String query = "DELETE FROM computer WHERE id=?;";
 		jdbcTemplate.update(query, id);
 	}
@@ -204,7 +204,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc) {
+	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc) {
 
 		String sFilter;
 		switch(filter){
@@ -331,7 +331,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public Computer findComputerById(Long paramId) {
+	public Computer findById(Long paramId) {
 
 		String query = "SELECT pc.id, pc.name, pc.introduced, pc.discontinued, comp.id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON pc.company_id=comp.id WHERE pc.id=?;";
 		//		Computer computer = (Computer) jdbcTemplate.queryForObject(query, new Object[] { paramId }, new BeanPropertyRowMapper<Computer>(Computer.class));
@@ -355,7 +355,7 @@ public class JdbcTemplateComputerDAO implements ComputerDAO {
 	}
 
 
-	public void updateComputer(final Computer computer) {
+	public void update(final Computer computer) {
 		final String query = "update computer set name= ?, introduced = ?, discontinued = ?, company_id = ? where id = ?";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();

@@ -11,10 +11,32 @@
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
 	<name>core</name>
+
+	<build>
+		<plugins>
+
+			<!-- Used by Querydsl (uses the Annotation Processing Tool of Java 6) -->
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<joda-time.version>2.3</joda-time.version>
-		<joda-time-jsptags>1.1.1</joda-time-jsptags>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,17 +48,17 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>${joda-time.version}</version>
+			<version>${joda-timeVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-jsptags</artifactId>
-			<version>${joda-time-jsptags}</version>
+			<version>${joda-time-jsptagsVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
-			<version>3.2.0.GA</version>
+			<version>${jadiraVersion}</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -53,10 +75,24 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
+			<version>${springVersion}</version>
 		</dependency>
 
-		
+		<!-- QueryDsl -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydslVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydslVersion}</version>
+		</dependency>
+
+
 
 
 	</dependencies>

@@ -58,7 +58,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * @param paramId l'id du Computer rechercher
 	 * @return l'instance de la Computer
 	 */
-	public Computer findComputerById(Long paramId){
+	public Computer findById(Long paramId){
 		Connection connection = DataSourceUtils.getConnection(datasource);
 		
 		Computer computer = new Computer();
@@ -115,7 +115,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * Liste tous les ordinateurs/computers repertorié dans la base
 	 * @return
 	 */
-	public List<Computer> getListComputers() {
+	public List<Computer> retrieveAll() {
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
 		
@@ -239,7 +239,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * retourne le nombre de computer/ordinateur dans la base
 	 * @return
 	 */
-	public int getNbComputer(){
+	public int count(){
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
 		
@@ -281,7 +281,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	/**
 	 * Insert un ordinateur/computer dans la base
 	 */
-	public Long insertComputer(Computer cp) {
+	public Long create(Computer cp) {
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
 
@@ -347,7 +347,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * Supprime l'ordinateur identifié en paramètre de la base de donnée
 	 * @param id
 	 */
-	public void deleteComputer(Long id){
+	public void delete(Long id){
 		
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
@@ -601,7 +601,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * @return
 	 */
 	@Transactional
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc) {
+	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc) {
 		
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
@@ -864,7 +864,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * Met à jour un Computer de la base
 	 * @param comp le Computer à mettre à jour
 	 */
-	public void updateComputer(Computer comp){
+	public void update(Computer comp){
 		
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);
@@ -906,7 +906,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	 * @param connection la connection
 	 * @return
 	 */
-	public int getNbComputerFilter(String filter) {
+	public int countWithFilter(String filter) {
 		
 		
 		Connection connection = DataSourceUtils.getConnection(datasource);

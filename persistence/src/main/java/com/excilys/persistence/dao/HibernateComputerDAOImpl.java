@@ -47,7 +47,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Computer findComputerById(Long paramId) {
+	public Computer findById(Long paramId) {
 		
 //		entityManager = entityManagerFactory.createEntityManager();
 		
@@ -59,7 +59,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 
 
 	@SuppressWarnings("unchecked")
-	public List<Computer> getListComputers() {
+	public List<Computer> retrieveAll() {
 //		entityManager = entityManagerFactory.createEntityManager();
 		
 //		return getCurrentSession().createQuery("from computer").list();
@@ -68,7 +68,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		return result;
 	}
 
-	public int getNbComputer() {
+	public int count() {
 //		entityManager = entityManagerFactory.createEntityManager();
 		
 		String query = "select count(*) from Computer";
@@ -79,7 +79,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		return result;
 	}
 
-	public int getNbComputerFilter(String word) {
+	public int countWithFilter(String word) {
 //		entityManager = entityManagerFactory.createEntityManager();
 	
 		String query = "select count(*) from Computer where name LIKE ?";
@@ -90,7 +90,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		return result;
 	}
 
-	public Long insertComputer(Computer cp) {
+	public Long create(Computer cp) {
 
 		EntityManager em2 = entityManagerFactory.createEntityManager();
 		EntityTransaction transac = em2.getTransaction();
@@ -108,11 +108,11 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		return cp.getId();
 	}
 
-	public void deleteComputer(Long id) {
+	public void delete(Long id) {
 		EntityManager em2 = entityManagerFactory.createEntityManager();
 		EntityTransaction transac = em2.getTransaction();
 		transac.begin();
-		Computer computer = findComputerById(id);
+		Computer computer = findById(id);
 		if (computer != null){
 			System.out.println("Computer trouvé: " + computer);
 //			getCurrentSession().delete(computer);
@@ -128,7 +128,7 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		em2.close();
 	}
 
-	public void updateComputer(Computer computer) {
+	public void update(Computer computer) {
 //		entityManager = entityManagerFactory.createEntityManager();
 //		EntityTransaction transac = entityManager.getTransaction();
 //		transac.begin();
@@ -138,54 +138,10 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 //		entityManager.close();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Computer> searchComputersByFilteringAndOrdering(String word,
-			int filter, boolean isAsc) {
-//		entityManager = entityManagerFactory.createEntityManager();
-		
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introducedDate"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinuedDate"; break;
-		case 3: // par nom de Company
-			sFilter = "co.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		String query;
-
-		// requete de recherche du pattern
-		if(isAsc)
-			query = "select pc, co from Computer as pc left outer join fetch pc.company as co where pc.name LIKE ? or co.name LIKE ? ORDER BY " + sFilter;
-		else
-			query = "select pc, co from Computer as pc left outer join fetch pc.company as co where pc.name LIKE ? or co.name LIKE ? ORDER BY " + sFilter + " DESC";
-
-		
-//		String paramWord = new StringBuilder("%").append(word).append("%").toString();
-		String paramWord = new StringBuilder("%").append(word).append("%").toString();
-		
-		System.out.println("La query: " + query);
-		System.out.println("Le mot: " + word);
-		List<Computer> tempList = entityManager.createQuery(query).setParameter(1, paramWord).setParameter(2, paramWord).getResultList();
-	
-		List<Computer> result = new ArrayList<>();
-		for (Object o : tempList) {
-			result.add((Computer) o);
-		}
-		
-//		entityManager.close();
-		return result;
-		
-	}
 
 
 	@SuppressWarnings("unchecked")
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(
+	public List<Computer> retrieve(
 			String word, int rang, int interval, int filter, boolean isAsc) {
 
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -291,83 +247,6 @@ public class HibernateComputerDAOImpl implements ComputerDAO {
 		
 		return result;
 
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Computer> getListComputersByFilteringAndOrdering(int filter,
-			boolean isAsc) {
-//		entityManager = entityManagerFactory.createEntityManager();
-		
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introducedDate"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinuedDate"; break;
-		case 3: // par nom de Company
-			sFilter = "co.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-		
-		sFilter = sFilter + ", pc.name ASC";
-
-		// ajoutez ici le code de r�cup�ration des produits
-		String query = "select pc, co from Computer as pc left outer join pc.company as co ORDER BY " + sFilter;
-		List<Computer> tempList = entityManager.createQuery(query).getResultList();
-	
-		List<Computer> result = new ArrayList<>();
-		for (Object o : tempList) {
-			result.add((Computer) o);
-		}
-		
-//		entityManager.close();
-		return result;
-	
-	}
-
-	
-	@SuppressWarnings("unchecked")
-	public List<Computer> getListComputersByFilteringAndOrderingWithRange(
-			int rang, int interval, int filter, boolean isAsc) {
-//		entityManager = entityManagerFactory.createEntityManager();
-		
-		String sFilter;
-		switch(filter){
-		case 0: // par nom de Computer
-			sFilter = "pc.name"; break;
-		case 1: // par introducedDate
-			sFilter = "pc.introducedDate"; break;
-		case 2: // par discontinuedDate
-			sFilter = "pc.discontinuedDate"; break;
-		case 3: // par nom de Company
-			sFilter = "co.name"; break;
-		default:
-			sFilter = "pc.name"; break;
-		}
-
-		if(!isAsc)
-			sFilter = sFilter + " DESC";
-		
-		sFilter = sFilter + ", pc.name ASC ";
-		
-		// ajoutez ici le code de r�cup�ration des produits
-		String query = "select pc, co from Computer as pc left outer join pc.company as co ORDER BY " + sFilter;
-		List<Computer> tempList = entityManager.createQuery(query).setFirstResult(rang*interval).setMaxResults(interval).getResultList();
-	
-		List<Computer> result = new ArrayList<>();
-		for (Object o : tempList) {
-			result.add((Computer) o);
-		}
-		
-//		entityManager.close();
-		return result;
-	
 	}
 
 }

@@ -12,19 +12,19 @@ public interface ComputerDAO {
 	 * @param paramId
 	 * @return
 	 */
-	public Computer findComputerById(Long paramId);
+	public Computer findById(Long paramId);
 	
 	/**
 	 * Liste tous les ordinateurs/computers repertorié dans la base
 	 * @return
 	 */
-	public List<Computer> getListComputers();
+	public List<Computer> retrieveAll();
 	
 	/**
 	 * retourne le nombre de computer/ordinateur dans la base
 	 * @return
 	 */
-	public int getNbComputer();
+	public int count();
 	
 	/**
 	 * retourne le nombre de computer/ordinateur dans la base contenant le motif filter
@@ -32,33 +32,24 @@ public interface ComputerDAO {
 	 * @param connection la connection
 	 * @return
 	 */
-	public int getNbComputerFilter(String filter);
+	public int countWithFilter(String filter);
 
 	/**
 	 * Insert un ordinateur/computer dans la base
 	 */
-	public Long insertComputer(Computer cp);
+	public Long create(Computer cp);
 
 	/**
 	 * Supprime l'ordinateur identifié en paramètre de la base de donnée
 	 * @param id
 	 */
-	public void deleteComputer(Long id);
+	public void delete(Long id);
 	
 	/**
 	 * Met à jour un computer
 	 * @param computer
 	 */
-	public void updateComputer(Computer computer);
-	
-	/**
-	 * Fonction de recherche par filtre
-	 * @param word le mot ou schema à rechercher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> searchComputersByFilteringAndOrdering(String word, int filter, boolean isAsc);
+	public void update(Computer computer);
 	
 	
 	/**
@@ -70,24 +61,7 @@ public interface ComputerDAO {
 	 * @param isAsc true => ascendant / false => descendant
 	 * @return
 	 */
-	public List<Computer> searchComputersByFilteringAndOrderingWithRange(String word, int rang, int interval, int filter, boolean isAsc);
+	public List<Computer> retrieve(String word, int rang, int interval, int filter, boolean isAsc);
 	
-	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> getListComputersByFilteringAndOrdering(int filter, boolean isAsc) ;
-	
-	/**
-	 * Liste tous les ordinateurs/computers repertorié dans la base avec les critères de filtrage et d'ordre
-	 * @param rang la page
-	 * @param interval le nombre d'element à afficher
-	 * @param filter le mode de tri (0 => name, 1 => introducedDate, 2 => discontinuedDate, 3 => company)
-	 * @param isAsc true => ascendant / false => descendant
-	 * @return
-	 */
-	public List<Computer> getListComputersByFilteringAndOrderingWithRange(int rang, int interval, int filter, boolean isAsc);
 	
 }
