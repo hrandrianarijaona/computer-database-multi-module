@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -34,9 +35,9 @@ public class AddComputer {
 	@Autowired
 	private ComputerService computerService;
 	
-//	@Autowired
-//	@Qualifier(value="messageSource")
-//	private ResourceBundleMessageSource rbms;
+	@Autowired
+	@Qualifier(value="messageSource")
+	private MessageSource messageSource;
 	
 	public AddComputer() {
 		// TODO Auto-generated constructor stub
@@ -65,7 +66,7 @@ public class AddComputer {
 			String sFiltre = "";
 			
 			
-//			DateTimeFormatter fmt = DateTimeFormat.forPattern(rbms.getMessage("add.date_format", null, LocaleContextHolder.getLocale()));
+			DateTimeFormatter fmt = DateTimeFormat.forPattern(messageSource.getMessage("add.date_format", null, LocaleContextHolder.getLocale()));
 			
 			// On crée le Computer
 			Computer c = new Computer();

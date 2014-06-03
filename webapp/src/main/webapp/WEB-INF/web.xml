@@ -48,11 +48,13 @@
 		<url-pattern>*.js</url-pattern>
 	</servlet-mapping>
 
+	<!-- Custom error page -->
 	<error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/jsp/errors/404.jsp</location>
 	</error-page>
 
+	<!-- Spring Security -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

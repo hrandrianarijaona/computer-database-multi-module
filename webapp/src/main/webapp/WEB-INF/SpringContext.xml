@@ -22,12 +22,14 @@
 	<context:component-scan base-package="com.excilys" />
 
 	<!-- bind your messages.properties -->
+<!-- 	<bean id="messageSource" -->
+<!-- 		class="org.springframework.context.support.ResourceBundleMessageSource"> -->
 	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>messages</value>
-				<value>contents</value>
+				<value>classpath:messages</value>
+				<value>classpath:contents</value>
 			</list>
 		</property>
 	</bean>
