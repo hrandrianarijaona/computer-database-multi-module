@@ -34,7 +34,6 @@ public class IndexServlet{
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	public IndexServlet() {
-		// TODO Auto-generated constructor stub
 		System.out.println("Je suis crée ... IndexServlet");
 	}
 
@@ -54,10 +53,6 @@ public class IndexServlet{
 		if(sFiltre==null)
 			sFiltre = "";
 
-		// on rattache à la jsp
-		//		request.setAttribute("page", page);
-		//		request.setAttribute("interval", interval);
-		//		request.setAttribute("filterText", sFiltre);
 
 		if(codeTri!=null)
 			c = Integer.parseInt(codeTri);
@@ -67,9 +62,7 @@ public class IndexServlet{
 		if(computerService == null)
 			System.out.println("computerService est null :(");
 
-		//		request.setAttribute("codeTri", c);
-
-		// Choix de l'ordre
+		
 		List<Computer> computerList = null;
 		//computerList = computerService.getListComputersWithRange(page, interval);
 		switch(c){
@@ -110,24 +103,15 @@ public class IndexServlet{
 			System.out.println("Mauvaise initialisation du codeTri...");
 		}
 
-		// compte le nb de Computer dans la base
+		// count the computer
 		int nbComputer = computerService.countWithFilter(sFiltre);
 		
-		log.info("*********************************************nb computer = " + nbComputer);
 		
-		//		request.setAttribute("nbComputer", nbComputer);
-
-		// liste les Computers
-		//		request.setAttribute("computerList", computerList);
-
-		// tous les Computer pour la navigation
 		List<Computer> allComputerList = computerService.retrieveAll();
-		//		request.setAttribute("allComputerList", allComputerList);
 
-		// calcul du nombre de page
 		int nbPage;
 		if(sFiltre.length()>0)
-			nbPage = (int) Math.ceil(computerService.retrieve(sFiltre, 0, interval, 3, false).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
+			nbPage = (int) Math.ceil(nbComputer/interval); // retourne le nombre de Computer correspondant au critère de recherche
 		else
 			nbPage = (int) Math.ceil(allComputerList.size()/interval);
 		//		request.setAttribute("nbPage", nbPage);

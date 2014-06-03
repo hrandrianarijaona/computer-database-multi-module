@@ -122,47 +122,47 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 		switch(filter){
 		case 0: // by Computer's name
 			if(isAsc){
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.asc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.asc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 			else{
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.desc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.desc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 		case 1: // by introducedDate
 			if(isAsc){
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.asc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.asc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 			else{
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.desc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.introducedDate.desc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 		case 2: // by discontinuedDate
 			if(isAsc){
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.asc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.asc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 			else{
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.desc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.discontinuedDate.desc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 		case 3: //by Company's name
 			if(isAsc){
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(company.name.asc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(company.name.asc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 			else{
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(company.name.desc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(company.name.desc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 		default:
 			if(isAsc){
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.asc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.asc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 			else{
-				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.desc()).list(qComputer);
+				tempList = query.from(qComputer).leftJoin(qComputer.company, company).where( qComputer.name.like(paramWord).or(company.name.like(paramWord)) ).orderBy(qComputer.name.desc()).offset(rang*interval).limit(interval).list(qComputer);
 				break;
 			}
 		}

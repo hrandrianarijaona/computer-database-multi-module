@@ -38,12 +38,12 @@ public class RedirectIndexServlet extends HttpServlet {
 	
 	public RedirectIndexServlet() {
 		// TODO Auto-generated constructor stub
-		System.out.println("Je suis crée ... RedirectIndexServlet");
+		System.out.println("RedirectIndexServlet");
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String affichIndex(ModelMap model, @RequestParam(value="page", required=false) String sPage, @RequestParam(value="interval", required=false) String sInterval, @RequestParam(value="filter", required=false) String sFiltre, @RequestParam(value="codeTri", required=false) String codeTri) throws ServletException, IOException {
-		System.out.println("On m'appelle ... RedirectIndexServlet");
+	public String affichIndex(ModelMap model, @RequestParam(value="page", required=false) String sPage, @RequestParam(value="interval", required=false) String sInterval, @RequestParam(value="filter", required=false) String sFiltre, @RequestParam(value="sortCode", required=false) String sortCode) throws ServletException, IOException {
+		System.out.println("RedirectIndexServlet");
 
 		int c; // 0 => Par nom croissant, 1 => nom décroissant, 2 => introDate croissant, 3 => introDate décroissant, 4 => discDate croissant, 5 => discDate décroissant, 6 => company croissant, 7 => company décroissant
 		int page = 0, interval = 20;
@@ -57,22 +57,15 @@ public class RedirectIndexServlet extends HttpServlet {
 		if(sFiltre==null)
 			sFiltre = "";
 
-		// on rattache à la jsp
-		//		request.setAttribute("page", page);
-		//		request.setAttribute("interval", interval);
-		//		request.setAttribute("filterText", sFiltre);
 
-		if(codeTri!=null)
-			c = Integer.parseInt(codeTri);
+		if(sortCode!=null)
+			c = Integer.parseInt(sortCode);
 		else
 			c = 0;
 
 		if(computerService == null)
 			System.out.println("computerService est null :(");
 
-		//		request.setAttribute("codeTri", c);
-
-		// Choix de l'ordre
 		List<Computer> computerList = null;
 		//computerList = computerService.getListComputersWithRange(page, interval);
 		switch(c){
@@ -110,26 +103,14 @@ public class RedirectIndexServlet extends HttpServlet {
 			break;
 		default:
 			//computerList = computerService.getListComputersByFilteringAndOrdering(0, true);
-			System.out.println("Mauvaise initialisation du codeTri...");
+			System.out.println("error code for sort...");
 		}
 
-		// compte le nb de Computer dans la base
 		int nbComputer = computerService.countWithFilter(sFiltre);
-//		System.out.println("*********************************************nb computer = " + nbComputer);
-//		System.out.println("*********************************************nb computer2 = " + computerList.size());
-//		for (Computer c1 : computerList) {
-//			System.out.println(c1);
-//		}
-		//		request.setAttribute("nbComputer", nbComputer);
 
-		// liste les Computers
-		//		request.setAttribute("computerList", computerList);
-
-		// tous les Computer pour la navigation
+		
 		List<Computer> allComputerList = computerService.retrieveAll();
-		//		request.setAttribute("allComputerList", allComputerList);
 
-		// calcul du nombre de page
 		int nbPage;
 		if(sFiltre.length()>0)
 			nbPage = (int) Math.ceil(computerService.retrieve(sFiltre, 0, interval, 3, false).size()/interval); // retourne le nombre de Computer correspondant au critère de recherche
@@ -138,14 +119,9 @@ public class RedirectIndexServlet extends HttpServlet {
 		//		request.setAttribute("nbPage", nbPage);
 
 		Page<Computer> laPage = new Page<>(nbComputer, page, interval, c, nbPage, sFiltre, computerList);
-//		System.out.println("La page:");
-//		for (Computer c1 : laPage.getListe()) {
-//			System.out.println(c1);
-//		}
-//		request.setAttribute("pageComputer", laPage);
+
 		model.addAttribute("pageComputer", laPage);
 
-	//	this.getServletContext().getRequestDispatcher( "/WEB-INF/dashboard.jsp" ).forward( request, response );
 		return "dashboard";
 	}
 

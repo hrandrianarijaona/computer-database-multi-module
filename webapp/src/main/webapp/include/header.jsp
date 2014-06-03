@@ -31,7 +31,7 @@
 			
 			<a href="?language=en${liste_param}"><img src="Images/english.gif" /></a>|<a href="?language=fr${liste_param}"><img src="Images/french.jpg" /></a>
 			<a class="btn btn-default btn-xs"
-					id="sortDesc" href="/logout"><span
+					id="sortDesc" href='<c:url value="j_spring_security_logout" />'><span
 						class="glyphicon glyphicon-off"></span></a>
 		</nav>
 	</header>
