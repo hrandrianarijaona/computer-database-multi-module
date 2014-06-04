@@ -51,7 +51,11 @@
 		<commons-dbcpVersion>1.4</commons-dbcpVersion> <!-- webapp module -->
 		<querydslVersion>3.3.4</querydslVersion> <!-- webapp module -->
 		<commons.logging.version>99.0-does-not-exist</commons.logging.version>
-		<springSecurityVersion>3.2.4.RELEASE</springSecurityVersion>
+		<springSecurityVersion>3.2.4.RELEASE</springSecurityVersion> <!-- webapp module -->
+		<springWebServiceVersion>2.2.0.RELEASE</springWebServiceVersion> <!-- webService module -->
+		<cxfVersion>3.0.0</cxfVersion> <!-- webService module -->
+		<jaxws-rtVersion>2.2.8</jaxws-rtVersion> <!-- webService module -->
+		<springRemotingVersion>2.0.8</springRemotingVersion>
 	</properties>
 
 	<repositories>
@@ -124,5 +128,6 @@
 		<module>service</module>
 		<module>binding</module>
 		<module>webapp</module>
+		<module>webService</module>
 	</modules>
 </project>

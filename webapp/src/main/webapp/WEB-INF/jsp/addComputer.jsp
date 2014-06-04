@@ -10,17 +10,17 @@
 			function() {
 				jQuery.validator.addMethod("dateFormat", function(value,
 						element) {
-					var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
+					var re = "<spring:message code='validation.pattern' text='/^\d{1,2}-\d{1,2}-\d{4}$/' />";
 					return (this.optional(element) && value == "")
 							|| re.test(value);
-				}, jQuery.validator.format("Incorrect format"));
+				}, jQuery.validator.format("<spring:message code='validation.format.message' text='Incorrect format' />"));
 
 				jQuery.validator.addMethod("checkDate",
 						function(value, element) {
 							var elem = value.split('-');
-							var day = parseInt(elem[2]);
-							var month = parseInt(elem[1]);
-							var year = parseInt(elem[0]);
+							var day = parseInt(elem["<spring:message code='validation.day.index' text='0' />"]);
+							var month = parseInt(elem["<spring:message code='validation.month.index' text='1' />"]);
+							var year = parseInt(elem["<spring:message code='validation.year.index' text='2' />"]);
 							if (day == 31
 									&& (month == 4 || month == 6 || month == 9
 											|| month == 11 || month == 04
@@ -44,7 +44,7 @@
 							} else {
 								return true;
 							}
-						}, "This date is not valid");
+						}, "<spring:message code='validation.date.invalid' text='This date is not valid' />");
 
 				jQuery.validator.addMethod("endDate", function(value, element) {
 					var startDate = $('#introducedDate').val();
@@ -52,7 +52,7 @@
 						return Date.parse(startDate) <= Date.parse(value);
 					else
 						return true;
-				}, "Discontinued date must be after introduced date");
+				}, "<spring:message code='validation.date.cohesion' text='Discontinued date must be after introduced date' />");
 
 				jQuery.validator.addMethod("requireIntroduced", function(value,
 						element) {
@@ -61,7 +61,7 @@
 						return $.trim(startDate).length > 0;
 					else
 						return true;
-				}, "Discontinued date requires an introduced date first");
+				}, "<spring:message code='validation.date.intro_req' text='Discontinued date requires an introduced date first' />");
 
 				jQuery(document).ready(function() {
 					jQuery("#addComputerForm").validate({

@@ -40,6 +40,8 @@
 			<artifactId>guava</artifactId>
 			<version>${guavaVersion}</version>
 		</dependency>
+		
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -50,8 +52,6 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${springVersion}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
