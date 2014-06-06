@@ -2,8 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <jsp:include page="../../include/header.jsp" />
-<script type="text/javascript" src="lib/jquery.js"></script>
-<script type="text/javascript" src="dist/jquery.validate.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(
@@ -62,6 +62,21 @@
 					else
 						return true;
 				}, "<spring:message code='validation.date.intro_req' text='Discontinued date requires an introduced date first' />");
+				
+				jQuery.validator.addMethod("requireName", function(value,
+						element) {
+					var theName = $('#name').val();
+					if ($.trim(value).length > 0)
+						return $.trim(theName).length > 0;
+					else
+						return true;
+				}, "<spring:message code='validation.name.isEmpty' text='The name must not be empty.' />");
+				
+				jQuery.validator.addMethod("dateComparison", function (value,element) {
+					if ( ($.trim(value).length > 0) && ($.trim($('#introducedDate').val()).length > 0) ) { return Date.parse($('#introducedDate').val()) < Date.parse(value); }
+					else {return true;}
+					},"Dates Impossibles"
+					);
 
 				jQuery(document).ready(function() {
 					jQuery("#addComputerForm").validate({
@@ -72,7 +87,7 @@
 						},
 						rules : {
 							"name" : {
-								"required" : true,
+								"requireName" : true,
 								"maxlength" : 255
 							},
 							"introducedDate" : {
@@ -81,6 +96,7 @@
 							},
 							"discontinuedDate" : {
 								dateFormat : true,
+								dateComparison: true,
 								checkDate : true,
 								requireIntroduced : true,
 								endDate : true
@@ -168,21 +184,6 @@
 				href="RedirectIndexServlet" class="btn btn-default">${ cancel }</a>
 		</div>
 	</form:form>
-
-
-	<p id="msg_err">
-		
-		<c:forEach var="elt" items="${errorList}">
-		    <c:choose>
-			    <c:when test="${((elt.key == 'name')&&(elt.value==1))}">Name must not be empty.<br/></c:when>
-			    <c:when test="${((elt.key == 'introducedDate')&&(elt.value==1))}">Introduced date must not be empty.<br/></c:when>
-			    <c:when test="${((elt.key == 'introducedDate')&&(elt.value==2))}">Introduced date is in the wrong format.<br/></c:when>
-			    <c:when test="${((elt.key == 'discontinuedDate')&&(elt.value==2))}">Discontinued date is in the wrong format.<br/></c:when>
-			    <c:when test="${((elt.key == 'discontinuedDate')&&(elt.value==3))}">Discontinued date must be posterior than introduced date.<br/></c:when>
-			    <c:otherwise>Champ inconnu.<br/></c:otherwise>
-			</c:choose>
-		</c:forEach>
-	</p>
 
 </section>
 

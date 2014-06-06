@@ -90,13 +90,18 @@ public class QueryDslComputerDAOImpl implements ComputerDAO {
 
 	@Override
 	public void delete(Long id) {
-		EntityManager em2 = entityManagerFactory.createEntityManager();
-		EntityTransaction transac = em2.getTransaction();
-		transac.begin();
+//		EntityManager em2 = entityManagerFactory.createEntityManager();
+//		EntityTransaction transac = em2.getTransaction();
+//		transac.begin();
+//		QComputer qComputer = QComputer.computer;
+//		new JPADeleteClause(em2, qComputer).where(qComputer.id.eq(id)).execute();
+//		transac.commit();
+//		em2.close();
+		
 		QComputer qComputer = QComputer.computer;
-		new JPADeleteClause(em2, qComputer).where(qComputer.id.eq(id)).execute();
-		transac.commit();
-		em2.close();
+		new JPADeleteClause(entityManager, qComputer).where(qComputer.id.eq(id)).execute();
+		
+		
 	}
 
 	@Override

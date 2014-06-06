@@ -24,28 +24,10 @@ public class ComputerService {
 
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
-//	@Autowired
-//	private ComputerDAOImpl computerDAO;
-//	@Autowired
-//	private JdbcTemplateComputerDAO computerDAO;
-	
-//	@Autowired
-//	private HibernateComputerDAOImpl computerDAO;
 	
 	@Autowired
 	private QueryDslComputerDAOImpl computerDAO;
-	
-//	@Autowired
-//	private LogServiceImpl logService;
 
-
-	/**
-	 * get an Instance of Computer
-	 * @return
-	 */
-	public ComputerService getInstance(){
-		return this;
-	}
 
 	/**
 	 * search Computer by Id

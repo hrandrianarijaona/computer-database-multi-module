@@ -34,10 +34,10 @@
 		<property name="disableConnectionTracking" value="true"></property>
 	</bean>
 
-<!-- BoneCP configuration -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+<!-- JDBC Template -->
+<!-- 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> -->
+<!-- 		<property name="dataSource" ref="dataSource" /> -->
+<!-- 	</bean> -->
 
 
 	<!-- JPA -->
@@ -57,7 +57,7 @@
 	</bean>
 
 	<!-- enable the configuration of transactional behavior based on annotations -->
-	<tx:annotation-driven transaction-manager="txManager" />
+	<tx:annotation-driven transaction-manager="txManager" mode="aspectj" />
 
 
 

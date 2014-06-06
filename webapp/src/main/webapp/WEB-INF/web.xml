@@ -17,6 +17,9 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+	</listener>
 
 	<!-- Root Spring Container -->
 	<context-param>
@@ -69,14 +72,36 @@
 	<servlet>
     	 <servlet-name>jaxws-servlet</servlet-name>
     	 <servlet-class>
-    	      com.sun.xml.ws.transport.http.servlet.WSSpringServlet
+    	      com.sun.xml.ws.transport.http.servlet.WSServlet
     	 </servlet-class>
     	 <load-on-startup>1</load-on-startup>
   	</servlet>
   	
   	<servlet-mapping>
          <servlet-name>jaxws-servlet</servlet-name>
-         <url-pattern>/jaxws-servlet</url-pattern>
+         <url-pattern>/service/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- WebService Rest -->
+    <servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+                     com.sun.jersey.spi.container.servlet.ServletContainer
+                </servlet-class>
+		<init-param>
+		     <param-name>com.sun.jersey.config.property.packages</param-name>
+		     <param-value>com.excilys.webServiceRest</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>
